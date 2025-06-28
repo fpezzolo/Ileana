@@ -1,6 +1,6 @@
-[package]
-name = "ileana"
-version = "0.1.0"
-edition = "2024"
-
-[dependencies]
+[workspace]
+members = [
+    "ileana-lib",
+    "ileana-cli"
+]
+resolver = "3"

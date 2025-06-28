@@ -10,7 +10,7 @@ Versione Beta
 il programma è realizzato in linguaggio [Rust](https://www.rust-lang.org/)
 Per l'installazione di Rust si rimanda al sito ufficiale.
 
-Il programma è sviluppato con [visual code](https://code.visualstudio.com/docs/languages/rust) ed utilizza Rust 1.87.0
+Il programma è sviluppato con [visual code](https://code.visualstudio.com/docs/languages/rust) ed utilizza Rust 1.88.0
 
 
 ### Compilazione
@@ -18,4 +18,7 @@ Il programma è sviluppato con [visual code](https://code.visualstudio.com/docs/
 Per compilare il programma si utilizza il comando
 
 ```md
-Usa il comando `cargo build --release` per compilare il progetto.
+Usa il comando `cargo run -p ileana-cli` per lanciare il progetto.
+
+le principali novita sono:
+un cambio di architettura con la divisione del programma in ileana-cli ed ileana-lib 

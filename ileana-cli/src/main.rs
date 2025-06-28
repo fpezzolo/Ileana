@@ -1,19 +1,12 @@
 use std::io;
 
-mod cerchio; // bla bla bla bla...
-mod geometria;
-mod logo;
-mod quadrato;
-mod rettangolo; // Modulo per calcolare area e perimetro del rettangolo
-mod rombo; // modolo per calcolare l area e il perimetro del rombo
-mod triangolo; // Modulo per calcolare area e perimetro del triangolo // Modulo per stampare il logo
-
-use crate::geometria::FiguraGeometrica;
-use cerchio::Cerchio;
-use quadrato::Quadrato;
-use rettangolo::Rettangolo;
-use rombo::Rombo;
-use triangolo::Triangolo;
+use ileana_lib::geometria::FiguraGeometrica;
+use ileana_lib::cerchio::Cerchio;
+use ileana_lib::quadrato::Quadrato;
+use ileana_lib::rettangolo::Rettangolo;
+use ileana_lib::rombo::Rombo;
+use ileana_lib::triangolo::Triangolo;
+use ileana_lib::logo;
 
 //use crate::quadrato::Quadrato;
 
