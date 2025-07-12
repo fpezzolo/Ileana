@@ -1,6 +1,7 @@
 # Ileana
 Programma didattico in Rust I.l.e.a.n.a. Interessante Lavoro Elabora Aree Nonchè Altro
 
+
 ### Note
 
 Versione Beta
@@ -40,3 +41,8 @@ Per garantire coerenza e qualità del codice, questo progetto include tre script
 
 ### 05/2025
 un cambio di architettura con la divisione del programma in ileana-cli ed ileana-lib 
+
+
+## 📄 Licenza
+
+Questo progetto è distribuito sotto licenza [GPL-3.0](LICENSE).

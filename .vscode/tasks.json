@@ -42,6 +42,21 @@
         "isDefault": true
       },
       "problemMatcher": []
-    }
+    },
+    {
+  "label": "Genera Documentazione",
+  "type": "shell",
+  "command": "powershell",
+  "args": [
+    "-File",
+    "scripts/doc.ps1"
+  ],
+  "group": {
+    "kind": "build",
+    "isDefault": false
+  },
+  "problemMatcher": []
+}
+
   ]
 }

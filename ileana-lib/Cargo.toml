@@ -2,5 +2,18 @@
 name = "ileana-lib"
 version = "0.1.0"
 edition = "2024"
+description = "Libreria didattica per geometria in Rust"
+license = "GPL-3.0"
+repository = "https://github.com/fpezzolo/Ileana"
+readme = "README.md"
+homepage = "https://github.com/fpezzolo/Ileana"
+keywords = ["rust", "geometria", "didattica", "figura", "open-source"]
+categories = ["science", "education", "mathematics"]
+authors = ["Federico Pezzolo (maintainer)","Francesco Pezzolo (maintainer)"]
 
 [dependencies]
+
+
+
+
+
