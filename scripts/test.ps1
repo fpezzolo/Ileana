@@ -1,2 +1,2 @@
 Write-Host " Avvio test con cargo test..."
-cargo test --workspace -- --nocapture
+cargo test --workspace -- #--nocapture

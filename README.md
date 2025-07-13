@@ -18,8 +18,8 @@ Il programma è sviluppato con [visual code](https://code.visualstudio.com/docs/
 
 Per compilare il programma si utilizza il comando
 
-```md
-Usa il comando `cargo run -p ileana-cli` per lanciare il progetto.
+```shell
+cargo run -p ileana-cli
 ```
 
 ## log attivita
