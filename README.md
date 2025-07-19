@@ -29,6 +29,9 @@ cargo run -p ileana-cli
 creata libreria web assembly e pagina di prova.
 adatta la libreria base al modello web assembly 
 
+ulteriori script di comodo
+debug binario
+
 introdotti script di utility nella cartella scripts
 introdotta la base per i test automatici 
 

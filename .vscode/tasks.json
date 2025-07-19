@@ -10,7 +10,7 @@
         "scripts/lint.ps1"
       ],
       "group": {
-        "kind": "build",
+        "kind": "none",
         "isDefault": false
       },
       "problemMatcher": []
@@ -38,8 +38,8 @@
         "scripts/lint-test.ps1"
       ],
       "group": {
-        "kind": "build",
-        "isDefault": true
+        "kind": "none",
+        "isDefault": false
       },
       "problemMatcher": []
     },
@@ -52,13 +52,13 @@
     "scripts/doc.ps1"
   ],
   "group": {
-    "kind": "build",
+    "kind": "none",
     "isDefault": false
   },
   "problemMatcher": []
 },
 {
-  "label": "Aggiorna Rus",
+  "label": "Aggiorna Rust",
   "type": "shell",
   "command": "powershell",
   "args": [
@@ -66,11 +66,54 @@
     "scripts/aggiorna_rust.ps1"
   ],
   "group": {
+    "kind": "none",
+    "isDefault": false
+  },
+  "problemMatcher": []
+},
+{
+  "label": "compila tutto dev",
+  "type": "shell",
+  "command": "powershell",
+  "args": [
+    "-File",
+    "scripts/build-dev.ps1"
+  ],
+  "group": {
+    "kind": "build",
+    "isDefault": true
+  },
+  "problemMatcher": ["$rustc"]
+},
+{
+  "label": "compila tutto prod",
+  "type": "shell",
+  "command": "powershell",
+  "args": [
+    "-File",
+    "scripts/build-release.ps1"
+  ],
+  "group": {
     "kind": "build",
     "isDefault": false
   },
   "problemMatcher": []
+},
+{
+  "label": "Prova WebAssembly",
+  "type": "shell",
+  "command": "powershell",
+  "args": [
+    "-File",
+    "scripts/avvia-prova-webassembly.ps1"
+  ],
+  "group": {
+    "kind": "none",
+    "isDefault": false
+  },
+  "problemMatcher": []
 }
+
 
   ]
 }
