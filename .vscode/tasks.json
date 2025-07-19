@@ -56,6 +56,20 @@
     "isDefault": false
   },
   "problemMatcher": []
+},
+{
+  "label": "Aggiorna Rus",
+  "type": "shell",
+  "command": "powershell",
+  "args": [
+    "-File",
+    "scripts/aggiorna_rust.ps1"
+  ],
+  "group": {
+    "kind": "build",
+    "isDefault": false
+  },
+  "problemMatcher": []
 }
 
   ]

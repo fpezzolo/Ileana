@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Calcoli Geometrici</title>
+</head>
+<body>
+  <h1>Area quadrato</h1>
+  <input id="lato" type="number" placeholder="Base">
+  <button onclick="calcola()">Calcola</button>
+  <p id="risultato"></p>
+
+  <script type="module">
+    import init, { area_quadrato_js } from './pkg/ileana_wasm.js';
+
+    init().then(() => {
+      window.calcola = () => {
+        const l = parseFloat(document.getElementById("lato").value);
+        const risultato = area_quadrato_js(l);
+        document.getElementById("risultato").textContent = `Area: ${risultato}`;
+      };
+    });
+  </script>
+</body>
+</html>

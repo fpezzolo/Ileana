@@ -25,6 +25,10 @@ cargo run -p ileana-cli
 ## log attivita
 
 ### 07/2025
+
+creata libreria web assembly e pagina di prova.
+adatta la libreria base al modello web assembly 
+
 introdotti script di utility nella cartella scripts
 introdotta la base per i test automatici 
 
