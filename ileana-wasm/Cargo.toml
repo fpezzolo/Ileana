@@ -1,8 +1,8 @@
 [package]
-name = "ileana-cli"
+name = "ileana-wasm"
 version = "0.1.0"
 edition = "2024"
-description = "cli command line interface Libreria didattica per geometria in Rust"
+description = "Adapter wasm Libreria didattica per geometria in Rust"
 license = "GPL-3.0"
 repository = "https://github.com/fpezzolo/Ileana"
 readme = "README.md"
@@ -11,5 +11,9 @@ keywords = ["rust", "geometria", "didattica", "figura", "open-source"]
 categories = ["science", "education", "mathematics"]
 authors = ["Federico Pezzolo (maintainer)","Francesco Pezzolo (maintainer)"]
 
+[lib]
+crate-type = ["cdylib"]
+
 [dependencies]
+wasm-bindgen = "0.2"
 ileana-lib = { path = "../ileana-lib" }

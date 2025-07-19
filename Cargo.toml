@@ -2,5 +2,5 @@
 members = [
     "ileana-lib",
     "ileana-cli"
-]
+, "ileana-wasm"]
 resolver = "3"
