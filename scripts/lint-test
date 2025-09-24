@@ -1,0 +1,6 @@
+#!/bin/bash
+if [[ "$OS" == "Windows_NT" ]]; then
+    powershell -File scripts/lint-test.ps1
+else
+    bash scripts/lint-test.sh
+fi

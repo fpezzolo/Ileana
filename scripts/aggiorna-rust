@@ -1,0 +1,6 @@
+#!/bin/bash
+if [[ "$OS" == "Windows_NT" ]]; then
+    powershell -File scripts/aggiorna-rust.ps1
+else
+    bash scripts/ggiorna-rust.sh
+fi

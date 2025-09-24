@@ -4,11 +4,7 @@
     {
       "label": "Lint",
       "type": "shell",
-      "command": "powershell",
-      "args": [
-        "-File",
-        "scripts/lint.ps1"
-      ],
+      "command": "scripts/lint",
       "group": {
         "kind": "none",
         "isDefault": false
@@ -18,11 +14,7 @@
     {
       "label": "Test",
       "type": "shell",
-      "command": "powershell",
-      "args": [
-        "-File",
-        "scripts/test.ps1"
-      ],
+      "command": "scripts/test",
       "group": {
         "kind": "test",
         "isDefault": false
@@ -32,11 +24,7 @@
     {
       "label": "Lint + Test",
       "type": "shell",
-      "command": "powershell",
-      "args": [
-        "-File",
-        "scripts/lint-test.ps1"
-      ],
+      "command": "scripts/lint-test",
       "group": {
         "kind": "none",
         "isDefault": false
@@ -46,11 +34,7 @@
     {
   "label": "Genera Documentazione",
   "type": "shell",
-  "command": "powershell",
-  "args": [
-    "-File",
-    "scripts/doc.ps1"
-  ],
+  "command": "scripts/doc",
   "group": {
     "kind": "none",
     "isDefault": false
@@ -60,11 +44,7 @@
 {
   "label": "Aggiorna Rust",
   "type": "shell",
-  "command": "powershell",
-  "args": [
-    "-File",
-    "scripts/aggiorna_rust.ps1"
-  ],
+  "command": "scripts/aggiorna-rust",
   "group": {
     "kind": "none",
     "isDefault": false
@@ -74,11 +54,7 @@
 {
   "label": "compila tutto dev",
   "type": "shell",
-  "command": "powershell",
-  "args": [
-    "-File",
-    "scripts/build-dev.ps1"
-  ],
+  "command": "scripts/build-dev",
   "group": {
     "kind": "build",
     "isDefault": true
@@ -88,11 +64,7 @@
 {
   "label": "compila tutto prod",
   "type": "shell",
-  "command": "powershell",
-  "args": [
-    "-File",
-    "scripts/build-release.ps1"
-  ],
+  "command": "scripts/build-release",
   "group": {
     "kind": "build",
     "isDefault": false
@@ -102,11 +74,7 @@
 {
   "label": "Prova WebAssembly",
   "type": "shell",
-  "command": "powershell",
-  "args": [
-    "-File",
-    "scripts/avvia-prova-webassembly.ps1"
-  ],
+  "command": "scripts/avvia-prova-webassembly",
   "group": {
     "kind": "none",
     "isDefault": false

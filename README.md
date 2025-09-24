@@ -24,6 +24,18 @@ cargo run -p ileana-cli
 
 ## log attivita
 
+### 09/2025
+
+script utility multi piattaforma per linux / windows
+nota bene serve abilitare i file di script per l'esecuzione in ambiente linux
+
+ricordarsi di installare basic-http-server con il comando:
+```shell
+cargo install basic-http-server
+```
+nel caso non funzionasse lo script Prova WebAssembly
+
+
 ### 07/2025
 
 creata libreria web assembly e pagina di prova.

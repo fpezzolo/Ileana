@@ -1,0 +1,6 @@
+#!/bin/bash
+if [[ "$OS" == "Windows_NT" ]]; then
+    powershell -File scripts/build-release.ps1
+else
+    bash scripts/build-release.sh
+fi

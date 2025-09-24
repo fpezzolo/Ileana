@@ -1,0 +1,6 @@
+#!/bin/bash
+if [[ "$OS" == "Windows_NT" ]]; then
+    powershell -File scripts/avvia-prova-webassembly.ps1
+else
+    bash scripts/avvia-prova-webassembly.sh
+fi
