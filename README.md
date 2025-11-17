@@ -24,6 +24,29 @@ cargo run -p ileana-cli
 
 ## log attivita
 
+### 11/2025
+
+installato il pacchetto tauri
+```shell
+npm create tauri-app
+```
+
+creata la app tauri con template svelt 
+
+```shell
+
+Template created! To get started run:
+  cd ileana-app
+  npm install
+  npm run tauri android init
+
+For Desktop development, run:
+  npm run tauri dev
+
+For Android development, run:
+  npm run tauri android dev
+
+```
 ### 09/2025
 
 script utility multi piattaforma per linux / windows

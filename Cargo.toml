@@ -1,6 +1,8 @@
 [workspace]
 members = [
     "ileana-lib",
-    "ileana-cli"
-, "ileana-wasm"]
+    "ileana-cli",
+    "ileana-wasm",
+    "ileana-app/src-tauri"
+]
 resolver = "3"
