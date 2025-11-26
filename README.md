@@ -24,6 +24,17 @@ cargo run -p ileana-cli
 
 ## log attivita
 
+### 26/11/2025
+
+comando per sotoppore ad AI la cartella di un progetto
+copia nella clip l'albero del progetto ripulito.
+```shell
+tree -L 3 -I "node_modules|target|dist|pkg|.*" | xclip -selection clipboard
+```
+
+Scheletro funzionante dell'app tauri
+
+
 ### 11/2025
 
 installato il pacchetto tauri

@@ -1,19 +1,42 @@
 <script lang="ts">
   import { invoke } from "@tauri-apps/api/core";
 
-  let name = $state("");
-  let greetMsg = $state("");
+  // Variabili di stato reattive per input e risultati
+  let lato = $state(0);
+  let area = $state<number | string>("N/A");
+  let perimetro = $state<number | string>("N/A");
 
-  async function greet(event: Event) {
+  async function calcolaQuadrato(event: Event) {
     event.preventDefault();
-    // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-    greetMsg = await invoke("greet", { name });
+    
+    // Convalida e conversione dell'input
+    const latoVal = parseFloat(lato.toString());
+
+    if (isNaN(latoVal) || latoVal <= 0) {
+      alert("Inserisci un valore numerico positivo per il lato.");
+      area = "N/A";
+      perimetro = "N/A";
+      return;
+    }
+
+    try {
+      // 1. Chiamata al Command Rust per l'Area
+      area = await invoke("calcola_area_quadrato", { lato: latoVal });
+
+      // 2. Chiamata al Command Rust per il Perimetro
+      perimetro = await invoke("calcola_perimetro_quadrato", { lato: latoVal });
+
+    } catch (e) {
+      console.error("Errore durante l'invocazione di Tauri:", e);
+      area = 'Errore';
+      perimetro = 'Errore';
+    }
   }
 </script>
 
 <main class="container">
-  <h1>Welcome to Tauri + Svelte</h1>
-
+  <h1>Geometria Ileana App - Quadrato</h1>
+  
   <div class="row">
     <a href="https://vite.dev" target="_blank">
       <img src="/vite.svg" class="logo vite" alt="Vite Logo" />
@@ -25,14 +48,25 @@
       <img src="/svelte.svg" class="logo svelte-kit" alt="SvelteKit Logo" />
     </a>
   </div>
-  <p>Click on the Tauri, Vite, and SvelteKit logos to learn more.</p>
+  <p>Calcola Area e Perimetro utilizzando la libreria Rust ileana-lib.</p>
 
-  <form class="row" onsubmit={greet}>
-    <input id="greet-input" placeholder="Enter a name..." bind:value={name} />
-    <button type="submit">Greet</button>
+  <form class="row" onsubmit={calcolaQuadrato}>
+    <input 
+      id="lato-input" 
+      type="number" 
+      step="any" 
+      placeholder="Inserisci la lunghezza del lato..." 
+      bind:value={lato} 
+    />
+    <button type="submit">Calcola</button>
   </form>
-  <p>{greetMsg}</p>
+
+  <div class="row" style="margin-top: 20px; gap: 40px;">
+    <p>Area: <strong>{typeof area === 'number' ? area.toFixed(2) : area}</strong></p>
+    <p>Perimetro: <strong>{typeof perimetro === 'number' ? perimetro.toFixed(2) : perimetro}</strong></p>
+  </div>
 </main>
+
 
 <style>
 .logo.vite:hover {
