@@ -6,13 +6,31 @@
   let area = $state<number | string>("N/A");
   let perimetro = $state<number | string>("N/A");
 
+    const MAX_SVG_LATO = 200; // Lato massimo del quadrato SVG
+  const MAX_LATO_VALUE = 200; // Valore massimo accettabile per l'input lato (ad esempio, 100 unità)
+  const MIN_SVG_LATO = 150; // <--- NUOVA COSTANTE: Lato minimo per evitare che il quadrato sparisca
+
+  // Calcolo dinamico e REATTIVO di lato_quadrato_px
+  const lato_quadrato_px = $derived(
+    typeof lato === "number" && lato > 0
+      ? Math.max(
+          (Math.min(lato, MAX_LATO_VALUE) / MAX_LATO_VALUE) * MAX_SVG_LATO,
+          MIN_SVG_LATO, // <-- Applica il limite minimo
+        )
+      : 10,
+  );
+
+  // Calcoli reattivi: raggio e margine_testo dipendono da lato_quadrato_px
+  const raggio = $derived(lato_quadrato_px / 2);
+  const margine_testo = $derived(raggio + 10);
+
   /**
    * Formatta il risultato numerico a due decimali o restituisce lo stato stringa.
    * @param value Il valore di Area o Perimetro.
    * @returns Il valore formattato come stringa.
    */
   function formatResult(value: number | string): string {
-    if (typeof value === 'number') {
+    if (typeof value === "number") {
       return value.toFixed(2);
     }
     return value;
@@ -20,14 +38,13 @@
 
   async function calcolaQuadrato(event: Event) {
     event.preventDefault();
-    
+
     // Convalida e conversione dell'input
     const latoVal = parseFloat(lato.toString());
-    
+
     // Feedback immediato
     area = "Calcolo...";
     perimetro = "Calcolo...";
-
 
     if (isNaN(latoVal) || latoVal <= 0) {
       alert("⚠️ Inserisci un valore numerico positivo per il lato.");
@@ -42,8 +59,8 @@
       perimetro = await invoke("calcola_perimetro_quadrato", { lato: latoVal });
     } catch (e) {
       console.error("Errore durante l'invocazione di Tauri:", e);
-      area = 'Errore ❌';
-      perimetro = 'Errore ❌';
+      area = "Errore ❌";
+      perimetro = "Errore ❌";
     }
   }
 </script>
@@ -52,22 +69,102 @@
   <h2>Calcolo Quadrato</h2>
   <p>Calcola Area e Perimetro utilizzando la libreria Rust ileana-lib.</p>
 
-  <form class="row" onsubmit={calcolaQuadrato}>
-    <input 
-      id="lato-input" 
-      type="number" 
-      step="any" 
-      placeholder="Lato..." 
-      bind:value={lato} 
-    />
-    <button type="submit">Calcola</button>
-  </form>
+  <div class="calculator-layout">
+    <!-- Colonna sinistra: Input -->
+    <div class="input-column">
+      <form class="row" onsubmit={calcolaQuadrato}>
+        <input
+          id="lato-input"
+          type="number"
+          step="any"
+          placeholder="Lato..."
+          bind:value={lato}
+        />
+        <button type="submit">Calcola</button>
+      </form>
 
-  <div class="row results-display">
-    <p>Area: <strong>{formatResult(area)}</strong></p>
-    <p>Perimetro: <strong>{formatResult(perimetro)}</strong></p>
+      <div class="text-results">
+        <p>Area: <strong>{formatResult(area)}</strong></p>
+        <p>Perimetro: <strong>{formatResult(perimetro)}</strong></p>
+      </div>
+    </div>
+
+    <!-- Colonna destra: Rappresentazione grafica -->
+
+    <div class="graphic-column">
+      {#if typeof area === "number" && lato > 0}
+        <div class="square-container">
+          
+
+
+<svg viewBox="0 0 200 200" class="square-svg">
+  <g transform="translate(100, 100)">
+    <rect
+      x={-raggio}
+      y={-raggio}
+      width={lato_quadrato_px}
+      height={lato_quadrato_px}
+      fill="none"
+      stroke="#4CAF50"
+      stroke-width="2"
+    />
+
+    <text
+      x="0"
+      y="0"
+      text-anchor="middle"
+      dominant-baseline="middle"
+      fill="#4CAF50"
+      font-weight="bold"
+      font-size="14"
+    >
+      Area: {formatResult(area)}
+    </text>
+
+    <text
+      x="0"
+      y="{+raggio + 10}"
+      text-anchor="middle"
+      dominant-baseline="middle"
+      fill="#4CAF50"
+      font-size="12"
+    >
+      Perimetro: {formatResult(perimetro)}
+    </text>
+
+    <text
+      x="0"
+      y={-raggio + 12}
+      text-anchor="middle"
+      fill="#4CAF50"
+      font-size="12"
+    >
+      Lato B: {lato.toFixed(2)}
+    </text>
+
+    <g transform="rotate(-90)">
+      <text
+        x="0"
+        y={-raggio + 10}  text-anchor="middle"
+        dominant-baseline="central"
+        fill="#4CAF50"
+        font-size="12"
+      >
+        Lato A: {lato.toFixed(2)}
+      </text>
+    </g>
+  </g>
+</svg>
+
+
+        </div>
+      {:else}
+        <div class="square-placeholder">
+          <p>Inserisci un valore valido per visualizzare il quadrato</p>
+        </div>
+      {/if}
+    </div>
   </div>
- 
 </div>
 
 <style>
@@ -77,18 +174,61 @@
     border-radius: 8px;
     padding: 20px;
     margin: 20px auto;
-    max-width: 400px;
+    max-width: 800px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     text-align: center;
   }
+
+  .calculator-layout {
+    display: flex;
+    gap: 30px;
+    margin-top: 20px;
+  }
+
+  .input-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .graphic-column {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   .row {
     display: flex;
     justify-content: center;
     gap: 10px;
   }
-  .results-display {
+
+  .text-results {
     margin-top: 20px;
     gap: 40px;
     font-size: 1.1em;
+  }
+
+  .square-container {
+    width: 200px;
+    height: 200px;
+  }
+
+  .square-svg {
+    width: 100%;
+    height: 100%;
+    font-family: Arial, sans-serif;
+  }
+
+  .square-placeholder {
+    width: 200px;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px dashed #ccc;
+    color: #666;
   }
 </style>

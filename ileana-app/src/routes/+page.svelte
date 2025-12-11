@@ -50,11 +50,12 @@
 
 .container {
   margin: 0;
-  padding-top: 10vh;
+  padding-top: 5vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   text-align: center;
+  min-height: 100vh;
 }
 
 .logo {
