@@ -17,8 +17,23 @@
   </div>
  
   
+  <!-- Esempi di utilizzo del componente Quadrato con diversi colori -->
+  
+  <!-- Versione predefinita (verde) -->
   <Quadrato />
+  
+ <!-- 
+  <Quadrato squareColor="#FF5722" textColor="#E64A19" />
+
+  
+
+  <Quadrato squareColor="#2196F3" textColor="#0D47A1" />
  
+  
+ 
+  <Quadrato squareColor="#9C27B0" textColor="#6A1B9A" />
+
+ -->
 
 </main>
 

@@ -1,6 +1,20 @@
 <script lang="ts">
   import { invoke } from "@tauri-apps/api/core";
 
+  /**
+   * Props per la personalizzazione del componente Quadrato
+   * 
+   * @prop {string} squareColor - Colore del bordo del quadrato (default: "#4CAF50")
+   * @prop {string} textColor - Colore del testo all'interno del quadrato (default: "#4CAF50")
+   * @prop {string} textSize - Dimensione del testo principale (default: "14px")
+   * 
+   * Esempi di utilizzo:
+   * <Quadrato /> - Utilizza i colori predefiniti
+   * <Quadrato squareColor="#FF5722" textColor="#E64A19" /> - Quadrato arancione
+   * <Quadrato squareColor="#2196F3" textColor="#0D47A1" /> - Quadrato blu
+   */
+  const { squareColor = "#4CAF50", textColor = "#4CAF50", textSize = "14px" } = $props();
+
   // Usiamo il tipo generico 'number | string' per includere sia il risultato che gli stati 'N/A'/'Errore'.
   let lato = $state(0);
   let area = $state<number | string>("N/A");
@@ -105,7 +119,7 @@
       width={lato_quadrato_px}
       height={lato_quadrato_px}
       fill="none"
-      stroke="#4CAF50"
+      stroke={squareColor}
       stroke-width="2"
     />
 
@@ -114,7 +128,7 @@
       y="0"
       text-anchor="middle"
       dominant-baseline="middle"
-      fill="#4CAF50"
+      fill={textColor}
       font-weight="bold"
       font-size="14"
     >
@@ -126,7 +140,7 @@
       y="{+raggio + 10}"
       text-anchor="middle"
       dominant-baseline="middle"
-      fill="#4CAF50"
+      fill={textColor}
       font-size="12"
     >
       Perimetro: {formatResult(perimetro)}
@@ -136,7 +150,7 @@
       x="0"
       y={-raggio + 12}
       text-anchor="middle"
-      fill="#4CAF50"
+      fill={textColor}
       font-size="12"
     >
       Lato B: {lato.toFixed(2)}
@@ -147,7 +161,7 @@
         x="0"
         y={-raggio + 10}  text-anchor="middle"
         dominant-baseline="central"
-        fill="#4CAF50"
+        fill={textColor}
         font-size="12"
       >
         Lato A: {lato.toFixed(2)}
