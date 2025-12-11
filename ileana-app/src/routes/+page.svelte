@@ -1,168 +1,91 @@
 <script lang="ts">
     import Quadrato from '../components/Quadrato.svelte';  
+    import Card from '../components/Card.svelte';
 </script>
 
-<main class="container">
-    
-  <!-- Test Tailwind CSS -->
-  <h1 class="text-3xl font-bold text-blue-600 mb-6">Benvenuto in Ileana!</h1>
-  <p class="text-lg text-gray-700 mb-8">Questa applicazione usa Tailwind CSS con Tauri e SvelteKit.</p>
+<!-- Hero Section -->
+<section class="text-center py-12 mb-12">
+  <h1 class="text-4xl md:text-5xl font-bold text-ileana-primary dark:text-ileana-accent mb-4">
+    Benvenuto in Ileana
+  </h1>
+  <p class="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-8">
+    Applicazione desktop moderna costruita con Tauri, SvelteKit e Tailwind CSS
+  </p>
   
-  <div class="row">
-    <a href="https://vite.dev" target="_blank">
-      <img src="/vite.svg" class="logo vite" alt="Vite Logo" />
-    </a>
-    <a href="https://tauri.app" target="_blank">
-      <img src="/tauri.svg" class="logo tauri" alt="Tauri Logo" />
-    </a>
-    <a href="https://svelte.dev" target="_blank">
-      <img src="/svelte.svg" class="logo svelte-kit" alt="SvelteKit Logo" />
-    </a>
+  <!-- Tecnologie -->
+  <div class="flex justify-center items-center space-x-8 mb-12">
+    <div class="text-center">
+      <img src="/tauri.svg" class="h-16 w-16 mx-auto mb-2" alt="Tauri" />
+      <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Tauri</span>
+    </div>
+    <div class="text-center">
+      <img src="/svelte.svg" class="h-16 w-16 mx-auto mb-2" alt="SvelteKit" />
+      <span class="text-sm font-medium text-gray-700 dark:text-gray-300">SvelteKit</span>
+    </div>
+    <div class="text-center">
+      <img src="/vite.svg" class="h-16 w-16 mx-auto mb-2" alt="Vite" />
+      <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Vite</span>
+    </div>
   </div>
- 
+</section>
+
+<!-- Features Section -->
+<section class="mb-12">
+  <h2 class="text-2xl font-bold text-ileana-primary dark:text-ileana-accent mb-8 text-center">
+    Componenti Geometrici
+  </h2>
   
-  <!-- Esempi di utilizzo del componente Quadrato con diversi colori -->
-  
-  <!-- Versione predefinita (verde) -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <!-- Quadrato predefinito -->
+    <Card
+      title="Quadrato Standard"
+      description="Versione predefinita con colori standard"
+      color="primary"
+    >
+      <div class="flex justify-center">
+        <Quadrato />
+      </div>
+    </Card>
+    
+    <!-- Quadrato personalizzato 1 -->
+    <Card
+      title="Quadrato Arancione"
+      description="Personalizzato con toni arancioni"
+      color="warning"
+    >
+      <div class="flex justify-center">
+        <Quadrato squareColor="#FF5722" textColor="#E64A19" />
+      </div>
+    </Card>
+    
+    <!-- Quadrato personalizzato 2 -->
+    <Card
+      title="Quadrato Blu"
+      description="Tema blu oceano"
+      color="primary"
+    >
+      <div class="flex justify-center">
+        <Quadrato squareColor="#2196F3" textColor="#0D47A1" />
+      </div>
+    </Card>
+    
+    <!-- Quadrato personalizzato 3 -->
+    <Card
+      title="Quadrato Viola"
+      description="Elegante combinazione viola"
+      color="secondary"
+      fullWidth={true}
+    >
+      <div class="flex justify-center">
+        <Quadrato squareColor="#9C27B0" textColor="#6A1B9A" />
+      </div>
+    </Card>
+  </div>
+</section>
 
-  <Quadrato />
-
-
-  
- <!-- 
-  <Quadrato squareColor="#FF5722" textColor="#E64A19" />
-
-  
-
-  <Quadrato squareColor="#2196F3" textColor="#0D47A1" />
- 
-  
- 
-  <Quadrato squareColor="#9C27B0" textColor="#6A1B9A" />
-
- -->
-
-</main>
-
-
-<style>
-.logo.vite:hover {
-  filter: drop-shadow(0 0 2em #747bff);
-}
-
-.logo.svelte-kit:hover {
-  filter: drop-shadow(0 0 2em #ff3e00);
-}
-
-:root {
-  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
-  font-size: 16px;
-  line-height: 24px;
-  font-weight: 400;
-
-  color: #0f0f0f;
-  background-color: #f6f6f6;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-text-size-adjust: 100%;
-}
-
-.container {
-  margin: 0;
-  padding-top: 5vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  text-align: center;
-  min-height: 100vh;
-}
-
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: 0.75s;
-}
-
-.logo.tauri:hover {
-  filter: drop-shadow(0 0 2em #24c8db);
-}
-
-.row {
-  display: flex;
-  justify-content: center;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-
-a:hover {
-  color: #535bf2;
-}
-
-h1 {
-  text-align: center;
-}
-
-input,
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  color: #0f0f0f;
-  background-color: #ffffff;
-  transition: border-color 0.25s;
-  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
-}
-
-button {
-  cursor: pointer;
-}
-
-button:hover {
-  border-color: #396cd8;
-}
-button:active {
-  border-color: #396cd8;
-  background-color: #e8e8e8;
-}
-
-input,
-button {
-  outline: none;
-}
-
-#greet-input {
-  margin-right: 5px;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    color: #f6f6f6;
-    background-color: #2f2f2f;
-  }
-
-  a:hover {
-    color: #24c8db;
-  }
-
-  input,
-  button {
-    color: #ffffff;
-    background-color: #0f0f0f98;
-  }
-  button:active {
-    background-color: #0f0f0f69;
-  }
-}
-
-</style>
+<!-- Call to Action -->
+<section class="text-center py-8">
+  <button class="bg-ileana-primary hover:bg-ileana-secondary text-white font-medium py-3 px-6 rounded-lg transition-colors">
+    Esplora di più
+  </button>
+</section>
