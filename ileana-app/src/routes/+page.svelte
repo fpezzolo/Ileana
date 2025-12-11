@@ -20,7 +20,10 @@
   <!-- Esempi di utilizzo del componente Quadrato con diversi colori -->
   
   <!-- Versione predefinita (verde) -->
+
   <Quadrato />
+
+
   
  <!-- 
   <Quadrato squareColor="#FF5722" textColor="#E64A19" />
