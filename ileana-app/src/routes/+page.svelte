@@ -4,6 +4,10 @@
 
 <main class="container">
     
+  <!-- Test Tailwind CSS -->
+  <h1 class="text-3xl font-bold text-blue-600 mb-6">Benvenuto in Ileana!</h1>
+  <p class="text-lg text-gray-700 mb-8">Questa applicazione usa Tailwind CSS con Tauri e SvelteKit.</p>
+  
   <div class="row">
     <a href="https://vite.dev" target="_blank">
       <img src="/vite.svg" class="logo vite" alt="Vite Logo" />
