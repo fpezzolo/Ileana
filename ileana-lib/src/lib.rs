@@ -1,10 +1,23 @@
-pub mod cerchio; // bla bla bla bla...
-pub mod geometria;
-pub mod logo;
-pub mod quadrato;
-pub mod rettangolo; // Modulo per calcolare area e perimetro del rettangolo
-pub mod rombo; // modolo per calcolare l area e il perimetro del rombo
-pub mod triangolo; // Modulo per calcolare area e perimetro del triangolo // Modulo per stampare il logo
+//! # Ileana - Libreria Geometrica
+//! 
+//! Una libreria Rust per calcolare area, perimetro e altre proprietà di figure geometriche.
+//! 
+//! Questa libreria fornisce implementazioni per:
+//! - Quadrati
+//! - Rettangoli
+//! - Triangoli
+//! - Rombo
+//! - Cerchi
+//! 
+//! Tutte le figure implementano il trait `FiguraGeometrica` che definisce i metodi comuni.
+
+pub mod cerchio; ///< Modulo per calcolare area e perimetro del cerchio
+pub mod geometria; ///< Modulo con il trait FiguraGeometrica e definizioni comuni
+pub mod logo; ///< Modulo per stampare il logo del programma
+pub mod quadrato; ///< Modulo per calcolare area e perimetro del quadrato
+pub mod rettangolo; ///< Modulo per calcolare area e perimetro del rettangolo
+pub mod rombo; ///< Modulo per calcolare area e perimetro del rombo
+pub mod triangolo; ///< Modulo per calcolare area e perimetro del triangolo
 
 #[cfg(test)]
 mod tests {

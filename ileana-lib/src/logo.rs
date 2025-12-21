@@ -1,3 +1,15 @@
+/// Stampa il logo ASCII del programma Ileana
+/// 
+/// Questo logo viene visualizzato all'avvio del programma CLI
+/// 
+/// # Esempio
+/// ```
+/// use ileana_lib::logo;
+/// 
+/// fn main() {
+///     logo::logo_ileana();
+/// }
+/// ```
 pub fn logo_ileana() {
     println!(
         "

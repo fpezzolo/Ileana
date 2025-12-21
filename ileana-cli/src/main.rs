@@ -8,8 +8,24 @@ use ileana_lib::rombo::Rombo;
 use ileana_lib::triangolo::Triangolo;
 use ileana_lib::logo;
 
-//use crate::quadrato::Quadrato;
-
+/// Punto di ingresso principale del programma CLI Ileana
+/// 
+/// Questo programma permette di calcolare area e perimetro di diverse figure geometriche
+/// attraverso un'interfaccia interattiva a riga di comando.
+/// 
+/// # Funzionalità
+/// 
+/// - Calcolo area e perimetro di quadrati
+/// - Calcolo area e perimetro di rettangoli
+/// - Calcolo area e perimetro di triangoli (con validazione)
+/// - Calcolo area e perimetro di rombi
+/// - Calcolo area e circonferenza di cerchi
+/// 
+/// # Esempio di utilizzo
+/// 
+/// ```bash
+/// cargo run --bin ileana-cli
+/// ```
 fn main() {
     // Stampa il logo del programma
     logo::logo_ileana();
@@ -164,8 +180,22 @@ fn main() {
     }
 }
 
-// Funzione per leggere un numero dall'input
-// Funzione per leggere un numero dall'input
+/// Legge un numero in virgola mobile dall'input standard
+/// 
+/// # Returns
+/// 
+/// `f64` - Il numero inserito dall'utente
+/// 
+/// # Panics
+/// 
+/// Panic se l'input non può essere convertito in un numero valido
+/// 
+/// # Esempio
+/// 
+/// ```
+/// let numero = leggi_numero(); // L'utente inserisce "3.14"
+/// assert_eq!(numero, 3.14);
+/// ```
 fn leggi_numero() -> f64 {
     let mut input = String::new();
     io::stdin()
@@ -174,6 +204,21 @@ fn leggi_numero() -> f64 {
     input.trim().parse().expect("Inserisci un numero valido") // Converte l'input in numero
 }
 
+/// Stampa le informazioni di area e perimetro di una figura geometrica
+/// 
+/// # Argomenti
+/// 
+/// * `figura` - Un riferimento a qualsiasi tipo che implementa il trait `FiguraGeometrica`
+/// 
+/// # Esempio
+/// 
+/// ```
+/// let quadrato = Quadrato { lato: 5.0 };
+/// stampa_info(&quadrato);
+/// // Stampa:
+/// // Area del Quadrato: 25
+/// // Perimetro del Quadrato: 20
+/// ```
 fn stampa_info(figura: &impl FiguraGeometrica) {
     println!(
         "Area del {}: {}",
