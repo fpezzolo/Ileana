@@ -23,33 +23,47 @@
   let area = $state<number | string>("N/A");
   let perimetro = $state<number | string>("N/A");
 
-  const MAX_SVG_BASE = 170; // Base massima del rettangolo SVG
-  const MAX_SVG_ALTEZZA = 170; // Altezza massima del rettangolo SVG
-  const MAX_VALUE = 170; // Valore massimo accettabile per l'input (ad esempio, 100 unità)
-  const MIN_SVG_DIMENSION = 130; // Dimensione minima per evitare che il rettangolo sparisca
+  const MAX_VALUE = 170; // Valore massimo accettabile per l'input
+  const MAX_SVG_SIZE = 150; // Dimensione massima SVG (per il lato più lungo)
+  const MIN_SVG_SIZE = 40; // Dimensione minima SVG (per il lato più corto)
+  const MAX_RATIO = 5; // Rapporto massimo consentito (es. 5:1)
+  const MIN_RATIO = 0.2; // Rapporto minimo consentito (es. 1:5)
 
-  // Calcolo dinamico e REATTIVO delle dimensioni del rettangolo
+  // Calcolo del rapporto con limiti per evitare estremi
+  const raw_ratio = $derived(
+    typeof base === "number" && typeof altezza === "number" && base > 0 && altezza > 0
+      ? base / altezza
+      : 1
+  );
+
+  // Applichiamo limiti al rapporto per mantenere la visualizzazione proporzionale
+  const ratio = $derived(
+    Math.min(Math.max(raw_ratio, MIN_RATIO), MAX_RATIO)
+  );
+
+  // Calcolo delle dimensioni SVG mantenendo il rapporto limitato
+  // Usiamo una dimensione fissa per il lato più lungo e scaliamo l'altro mantenendo il rapporto
   const base_px = $derived(
-    typeof base === "number" && base > 0
-      ? Math.max(
-          (Math.min(base, MAX_VALUE) / MAX_VALUE) * MAX_SVG_BASE,
-          MIN_SVG_DIMENSION, // Applica il limite minimo
-        )
-      : 10,
+    typeof base === "number" && base > 0 && typeof altezza === "number" && altezza > 0
+      ? Math.min(Math.max((base / (base + altezza)) * MAX_SVG_SIZE * 1.5, MIN_SVG_SIZE), MAX_SVG_SIZE)
+      : MAX_SVG_SIZE
   );
 
   const altezza_px = $derived(
-    typeof altezza === "number" && altezza > 0
-      ? Math.max(
-          (Math.min(altezza, MAX_VALUE) / MAX_VALUE) * MAX_SVG_ALTEZZA,
-          MIN_SVG_DIMENSION, // Applica il limite minimo
-        )
-      : 10,
+    typeof altezza === "number" && altezza > 0 && typeof base === "number" && base > 0
+      ? Math.min(Math.max((altezza / (base + altezza)) * MAX_SVG_SIZE * 1.5, MIN_SVG_SIZE), MAX_SVG_SIZE)
+      : MAX_SVG_SIZE
   );
 
   // Calcoli reattivi per la posizione del testo
   const half_base = $derived(base_px / 2);
   const half_altezza = $derived(altezza_px / 2);
+  
+  // Posizione verticale per il testo del perimetro (sotto il rettangolo)
+  const perimeter_y = $derived(half_altezza + 15);
+  
+  // Posizione verticale per l'etichetta della base (sopra il rettangolo)
+  const base_label_y = $derived(-half_altezza - 10);
 
   /**
    * Formatta il risultato numerico a due decimali o restituisce lo stato stringa.
@@ -165,12 +179,17 @@
               <text x="0" y="-6" class="area-label">Area:</text>
               <text x="0" y="6" class="area-value">{formatResult(area)}</text>
 
-              <text x="0" y={half_altezza + 10} class="perimeter-text">
+              <text x="0" y={perimeter_y} class="perimeter-text">
                 Perimetro: {formatResult(perimetro)}
               </text>
 
-              <text x="0" y={-half_altezza + 12} class="side-label side-b">
+              <text x="0" y={base_label_y} class="side-label side-b">
                 Base: {base.toFixed(2)}
+              </text>
+              
+              <!-- Debug: Mostra i valori calcolati -->
+              <text x="0" y={half_altezza + 30} class="side-label side-b" style="fill: red; font-size: 10px;">
+                Debug: {base_px.toFixed(1)}x{altezza_px.toFixed(1)} (raw: {raw_ratio.toFixed(2)}, adj: {ratio.toFixed(2)})
               </text>
 
               <g transform="rotate(-90)">
