@@ -1,5 +1,6 @@
 <script lang="ts">
     import Quadrato from '../components/Quadrato.svelte';  
+    import Rettangolo from '../components/Rettangolo.svelte';
     import Card from '../components/Card.svelte';
 </script>
 
@@ -78,6 +79,39 @@
     >
       <div class="flex justify-center">
         <Quadrato squareColor="#9C27B0" textColor="#6A1B9A" />
+      </div>
+    </Card>
+    
+    <!-- Rettangolo predefinito -->
+    <Card
+      title="Rettangolo Standard"
+      description="Versione predefinita con colori standard"
+      color="primary"
+    >
+      <div class="flex justify-center">
+        <Rettangolo />
+      </div>
+    </Card>
+    
+    <!-- Rettangolo personalizzato 1 -->
+    <Card
+      title="Rettangolo Arancione"
+      description="Personalizzato con toni arancioni"
+      color="warning"
+    >
+      <div class="flex justify-center">
+        <Rettangolo rectColor="#FF5722" textColor="#E64A19" />
+      </div>
+    </Card>
+    
+    <!-- Rettangolo personalizzato 2 -->
+    <Card
+      title="Rettangolo Verde"
+      description="Tema verde natura"
+      color="success"
+    >
+      <div class="flex justify-center">
+        <Rettangolo rectColor="#4CAF50" textColor="#2E7D32" />
       </div>
     </Card>
   </div>

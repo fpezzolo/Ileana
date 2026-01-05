@@ -7,6 +7,11 @@ const host = process.env.TAURI_DEV_HOST;
 // https://vite.dev/config/
 export default defineConfig(async () => ({
   plugins: [sveltekit()],
+  
+  // Configurazione specifica per risolvere il problema PostCSS
+  optimizeDeps: {
+    exclude: ["@tauri-apps/api"],
+  },
 
   // Vite options tailored for Tauri development and only applied in `tauri dev` or `tauri build`
   //
