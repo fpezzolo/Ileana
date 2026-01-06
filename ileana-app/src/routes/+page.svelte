@@ -1,6 +1,7 @@
 <script lang="ts">
     import Quadrato from '../components/Quadrato.svelte';  
     import Rettangolo from '../components/Rettangolo.svelte';
+    import Cerchio from '../components/Cerchio.svelte';
     import Card from '../components/Card.svelte';
 </script>
 
@@ -112,6 +113,39 @@
     >
       <div class="flex justify-center">
         <Rettangolo rectColor="#4CAF50" textColor="#2E7D32" />
+      </div>
+    </Card>
+     
+    <!-- Cerchio predefinito -->
+    <Card
+      title="Cerchio Standard"
+      description="Versione predefinita con colori standard"
+      color="primary"
+    >
+      <div class="flex justify-center">
+        <Cerchio />
+      </div>
+    </Card>
+     
+    <!-- Cerchio personalizzato 1 -->
+    <Card
+      title="Cerchio Blu"
+      description="Personalizzato con toni blu"
+      color="primary"
+    >
+      <div class="flex justify-center">
+        <Cerchio circleColor="#2196F3" textColor="#0D47A1" />
+      </div>
+    </Card>
+     
+    <!-- Cerchio personalizzato 2 -->
+    <Card
+      title="Cerchio Verde"
+      description="Tema verde natura"
+      color="success"
+    >
+      <div class="flex justify-center">
+        <Cerchio circleColor="#4CAF50" textColor="#2E7D32" />
       </div>
     </Card>
   </div>
