@@ -112,6 +112,8 @@
           placeholder="Lato..."
           bind:value={lato}
           class="lato-input-box"
+          min="0"
+          oninput={e => e.currentTarget.value = Math.max(0, parseFloat(e.currentTarget.value) || 0).toString()}
         />
 
         <button type="submit">Calcola</button>

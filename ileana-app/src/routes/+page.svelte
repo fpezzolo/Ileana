@@ -49,39 +49,7 @@
       </div>
     </Card>
     
-    <!-- Quadrato personalizzato 1 -->
-    <Card
-      title="Quadrato Arancione"
-      description="Personalizzato con toni arancioni"
-      color="warning"
-    >
-      <div class="flex justify-center">
-        <Quadrato squareColor="#FF5722" textColor="#E64A19" />
-      </div>
-    </Card>
-    
-    <!-- Quadrato personalizzato 2 -->
-    <Card
-      title="Quadrato Blu"
-      description="Tema blu oceano"
-      color="primary"
-    >
-      <div class="flex justify-center">
-        <Quadrato squareColor="#2196F3" textColor="#0D47A1" />
-      </div>
-    </Card>
-    
-    <!-- Quadrato personalizzato 3 -->
-    <Card
-      title="Quadrato Viola"
-      description="Elegante combinazione viola"
-      color="secondary"
-      fullWidth={true}
-    >
-      <div class="flex justify-center">
-        <Quadrato squareColor="#9C27B0" textColor="#6A1B9A" />
-      </div>
-    </Card>
+  
     
     <!-- Rettangolo predefinito -->
     <Card
@@ -94,27 +62,6 @@
       </div>
     </Card>
     
-    <!-- Rettangolo personalizzato 1 -->
-    <Card
-      title="Rettangolo Arancione"
-      description="Personalizzato con toni arancioni"
-      color="warning"
-    >
-      <div class="flex justify-center">
-        <Rettangolo rectColor="#FF5722" textColor="#E64A19" />
-      </div>
-    </Card>
-    
-    <!-- Rettangolo personalizzato 2 -->
-    <Card
-      title="Rettangolo Verde"
-      description="Tema verde natura"
-      color="success"
-    >
-      <div class="flex justify-center">
-        <Rettangolo rectColor="#4CAF50" textColor="#2E7D32" />
-      </div>
-    </Card>
      
     <!-- Cerchio predefinito -->
     <Card
@@ -127,27 +74,6 @@
       </div>
     </Card>
      
-    <!-- Cerchio personalizzato 1 -->
-    <Card
-      title="Cerchio Blu"
-      description="Personalizzato con toni blu"
-      color="primary"
-    >
-      <div class="flex justify-center">
-        <Cerchio circleColor="#2196F3" textColor="#0D47A1" />
-      </div>
-    </Card>
-     
-    <!-- Cerchio personalizzato 2 -->
-    <Card
-      title="Cerchio Verde"
-      description="Tema verde natura"
-      color="success"
-    >
-      <div class="flex justify-center">
-        <Cerchio circleColor="#4CAF50" textColor="#2E7D32" />
-      </div>
-    </Card>
   </div>
 </section>
 

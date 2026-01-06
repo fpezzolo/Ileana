@@ -119,6 +119,8 @@
           placeholder="Raggio..."
           bind:value={raggio}
           class="raggio-input-box"
+          min="0"
+          oninput={e => e.currentTarget.value = Math.max(0, parseFloat(e.currentTarget.value) || 0).toString()}
         />
 
         <button type="submit">Calcola</button>
@@ -139,7 +141,7 @@
     <div class="graphic-column">
       {#if typeof area === "number" && raggio > 0}
         <div class="circle-container">
-          <svg viewBox="0 0 200 200" class="circle-svg" style={ `--circle-color: ${circleColor}; --text-color: ${textColor};` }>
+          <svg viewBox="0 0 200 220" class="circle-svg" style={ `--circle-color: ${circleColor}; --text-color: ${textColor};` }>
             <g transform="translate(100, 100)">
               <circle
                 cx="0"
@@ -152,7 +154,8 @@
               <text x="0" y="-12" class="area-label">Area:</text>
               <text x="0" y="4" class="area-value">{formatResult(area)}</text>
 
-              <text x="0" y={raggio_cerchio_px + 12} class="perimeter-text">
+              <!-- Testo sotto il cerchio - posizionamento fisso per evitare overflow -->
+              <text x="0" y={Math.min(raggio_cerchio_px + 12, 90)} class="perimeter-text">
                 Circonferenza: {formatResult(perimetro)}
               </text>
 
@@ -160,7 +163,8 @@
                 Raggio: {raggio.toFixed(2)}
               </text>
 
-              <text x="0" y={raggio_cerchio_px + 25} class="diameter-label">
+              <!-- Limita la posizione massima per evitare overflow -->
+              <text x="0" y={Math.min(raggio_cerchio_px + 25, 105)} class="diameter-label">
                 Diametro: {(raggio * 2).toFixed(2)}
               </text>
             </g>
@@ -254,7 +258,7 @@
 
   .circle-container {
     width: 200px;
-    height: 200px;
+    height: 220px; /* Aumentato per contenere il testo aggiuntivo */
   }
 
   .circle-svg {

@@ -138,6 +138,8 @@
             placeholder="Base..."
             bind:value={base}
             class="input-box"
+            min="0"
+            oninput={e => e.currentTarget.value = Math.max(0, parseFloat(e.currentTarget.value) || 0).toString()}
           />
         </div>
 
@@ -150,6 +152,8 @@
             placeholder="Altezza..."
             bind:value={altezza}
             class="input-box"
+            min="0"
+            oninput={e => e.currentTarget.value = Math.max(0, parseFloat(e.currentTarget.value) || 0).toString()}
           />
         </div>
 
