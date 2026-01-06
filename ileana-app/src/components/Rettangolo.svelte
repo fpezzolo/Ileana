@@ -191,10 +191,7 @@
                 Base: {base.toFixed(2)}
               </text>
               
-              <!-- Debug: Mostra i valori calcolati -->
-              <text x="0" y={half_altezza + 30} class="side-label side-b" style="fill: red; font-size: 10px;">
-                Debug: {base_px.toFixed(1)}x{altezza_px.toFixed(1)} (raw: {raw_ratio.toFixed(2)}, adj: {ratio.toFixed(2)})
-              </text>
+
 
               <g transform="rotate(-90)">
                 <text x="0" y={-half_altezza + 10} class="side-label side-a">
