@@ -2,6 +2,7 @@
     import Quadrato from '../components/Quadrato.svelte';  
     import Rettangolo from '../components/Rettangolo.svelte';
     import Cerchio from '../components/Cerchio.svelte';
+    import Triangolo from '../components/Triangolo.svelte';
     import Card from '../components/Card.svelte';
 </script>
 
@@ -71,6 +72,17 @@
     >
       <div class="flex justify-center">
         <Cerchio />
+      </div>
+    </Card>
+    
+    <!-- Triangolo predefinito -->
+    <Card
+      title="Triangolo Standard"
+      description="Versione predefinita con colori standard"
+      color="primary"
+    >
+      <div class="flex justify-center">
+        <Triangolo />
       </div>
     </Card>
      

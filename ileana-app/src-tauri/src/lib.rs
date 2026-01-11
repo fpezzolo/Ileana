@@ -2,6 +2,7 @@
 use ileana_lib::quadrato::Quadrato;
 use ileana_lib::rettangolo::Rettangolo;
 use ileana_lib::cerchio::Cerchio;
+use ileana_lib::triangolo::Triangolo;
 use ileana_lib::geometria::FiguraGeometrica; 
 
 #[cfg(test)]
@@ -113,6 +114,30 @@ mod tests {
         assert!((perimetro - expected_perimetro).abs() < 1e-10);
     }
 
+    #[test]
+    fn test_triangolo_comandi_integrazione() {
+        // Test con triangolo rettangolo 3-4-5 (valori noti)
+        let area = calcola_area_triangolo(3.0, 4.0, 5.0, 2.4);
+        let perimetro = calcola_perimetro_triangolo(3.0, 4.0, 5.0, 2.4);
+        
+        // Area dovrebbe essere (5.0 * 2.4) / 2.0 = 6.0
+        assert_eq!(area, 6.0);
+        
+        // Perimetro dovrebbe essere 3.0 + 4.0 + 5.0 = 12.0
+        assert_eq!(perimetro, 12.0);
+    }
+
+    #[test]
+    fn test_triangolo_non_valido() {
+        // Test con triangolo non valido (1+2 non > 5)
+        let area = calcola_area_triangolo(1.0, 2.0, 5.0, 1.0);
+        let perimetro = calcola_perimetro_triangolo(1.0, 2.0, 5.0, 1.0);
+        
+        // Dovrebbe restituire 0.0 per entrambi
+        assert_eq!(area, 0.0);
+        assert_eq!(perimetro, 0.0);
+    }
+
     // Test di integrazione completa
     #[test]
     fn test_tutte_le_figure_integrazione() {
@@ -195,6 +220,20 @@ fn calcola_perimetro_cerchio(raggio: f64) -> f64 {
     c.calcola_perimetro() 
 }
 
+// Command per il calcolo dell'area del triangolo (usa ileana-lib)
+#[tauri::command]
+fn calcola_area_triangolo(lato1: f64, lato2: f64, lato_base: f64, altezza: f64) -> f64 {
+    let t = Triangolo { lato1, lato2, lato_base, altezza };
+    t.calcola_area() 
+}
+
+// Command per il calcolo del perimetro del triangolo (usa ileana-lib)
+#[tauri::command]
+fn calcola_perimetro_triangolo(lato1: f64, lato2: f64, lato_base: f64, altezza: f64) -> f64 {
+    let t = Triangolo { lato1, lato2, lato_base, altezza };
+    t.calcola_perimetro() 
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
@@ -207,7 +246,9 @@ pub fn run() {
             calcola_area_rettangolo,    // Registriamo l'Area del rettangolo
             calcola_perimetro_rettangolo, // Registriamo il Perimetro del rettangolo
             calcola_area_cerchio,      // Registriamo l'Area del cerchio
-            calcola_perimetro_cerchio   // Registriamo la Circonferenza del cerchio
+            calcola_perimetro_cerchio,  // Registriamo la Circonferenza del cerchio
+            calcola_area_triangolo,    // Registriamo l'Area del triangolo
+            calcola_perimetro_triangolo // Registriamo il Perimetro del triangolo
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

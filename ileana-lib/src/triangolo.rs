@@ -41,15 +41,16 @@ impl Triangolo {
     /// Verifica la validità del triangolo usando la disuguaglianza triangolare
     /// 
     /// Un triangolo è valido se la somma di due lati è maggiore del terzo lato
+    /// per tutte e tre le combinazioni
     /// 
     /// # Returns
     /// 
     /// `bool` - `true` se il triangolo è valido, `false` altrimenti
     fn disuguaglianza_triangolosa(&self) -> bool {
-        if self.lato1 + self.lato2 > self.lato_base {
-            return true
-        }
-         false
+        // Controlla tutte e tre le disuguaglianze triangolari
+        self.lato1 + self.lato2 > self.lato_base &&
+        self.lato1 + self.lato_base > self.lato2 &&
+        self.lato2 + self.lato_base > self.lato1
     }
 }
 

@@ -420,6 +420,23 @@ mod tests {
 
     // Test aggiuntivi per triangolo
     #[test]
+    fn test_triangolo_3_4_5_valido() {
+        // Test con triangolo rettangolo 3-4-5 (valido)
+        // Questo test verifica che il fix per la disuguaglianza triangolare funzioni correttamente
+        let t = Triangolo {
+            lato1: 3.0,
+            lato2: 4.0,
+            lato_base: 5.0,
+            altezza: 2.4,
+        };
+
+        // Il triangolo dovrebbe essere valido
+        assert_eq!(t.descrizione(), "Triangolo");
+        assert_eq!(t.calcola_area(), 6.0); // (5.0 * 2.4) / 2.0
+        assert_eq!(t.calcola_perimetro(), 12.0); // 3.0 + 4.0 + 5.0
+    }
+
+    #[test]
     fn test_triangolo_non_valido() {
         // Triangolo non valido: 1 + 2 non è > 5 (disuguaglianza triangolare)
         let t_invalido = Triangolo {
