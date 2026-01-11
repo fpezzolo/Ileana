@@ -128,6 +128,19 @@ mod tests {
     }
 
     #[test]
+    fn test_triangolo_3_4_5_con_altezza_2_5() {
+        // Test con triangolo 3-4-5 e altezza 2.5 (valido)
+        let area = calcola_area_triangolo(3.0, 4.0, 5.0, 2.5);
+        let perimetro = calcola_perimetro_triangolo(3.0, 4.0, 5.0, 2.5);
+        
+        // Area dovrebbe essere (5.0 * 2.5) / 2.0 = 6.25
+        assert_eq!(area, 6.25);
+        
+        // Perimetro dovrebbe essere 3.0 + 4.0 + 5.0 = 12.0
+        assert_eq!(perimetro, 12.0);
+    }
+
+    #[test]
     fn test_triangolo_non_valido() {
         // Test con triangolo non valido (1+2 non > 5)
         let area = calcola_area_triangolo(1.0, 2.0, 5.0, 1.0);

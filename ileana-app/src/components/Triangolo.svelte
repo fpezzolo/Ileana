@@ -25,9 +25,10 @@
   let area = $state<number | string>("N/A");
   let perimetro = $state<number | string>("N/A");
 
-  const MAX_VALUE = 100; // Valore massimo accettabile per l'input
-  const MAX_SVG_SIZE = 120; // Dimensione massima SVG
-  const MIN_SVG_SIZE = 40; // Dimensione minima SVG
+  const MAX_VALUE = 1000; // Valore massimo accettabile per l'input - aumentato per gestire valori più grandi
+  const MAX_SVG_SIZE = 180; // Dimensione massima SVG - aumentata per migliore visibilità
+  const MIN_SVG_SIZE = 60; // Dimensione minima SVG - aumentata per evitare triangoli troppo piccoli
+  const SVG_CONTAINER_HEIGHT = 240; // Altezza del contenitore SVG per accomodare testo sopra e sotto
   const MAX_RATIO = 3; // Rapporto massimo consentito
   const MIN_RATIO = 0.3; // Rapporto minimo consentito
 
@@ -61,10 +62,13 @@
   const half_altezza = $derived(altezza_px / 2);
   
   // Posizione verticale per il testo del perimetro (sotto il triangolo)
-  const perimeter_y = $derived(half_altezza + 15);
+  const perimeter_y = $derived(Math.min(half_altezza + 20, 80));
   
   // Posizione verticale per l'etichetta della base (sopra il triangolo)
-  const base_label_y = $derived(-half_altezza - 10);
+  const base_label_y = $derived(Math.max(-half_altezza - 25, -80));
+  
+  // Posizione verticale per il testo dell'area (centrato nel triangolo)
+  const area_y = $derived(-10);
 
   /**
    * Formatta il risultato numerico a due decimali o restituisce lo stato stringa.
@@ -82,6 +86,7 @@
   $effect(() => {
     if (typeof lato1 === "number" && typeof lato2 === "number" && typeof lato_base === "number" && typeof altezza === "number" && 
         lato1 > 0 && lato2 > 0 && lato_base > 0 && altezza > 0) {
+      // Chiamata asincrona - non attendere per evitare blocchi
       calcolaAutomaticamente();
     } else if (lato1 === 0 || lato2 === 0 || lato_base === 0 || altezza === 0) {
       // Reset quando uno dei valori viene azzerato
@@ -114,24 +119,26 @@
       area = await invoke("calcola_area_triangolo", { 
         lato1: lato1Val, 
         lato2: lato2Val, 
-        lato_base: latoBaseVal, 
+        latoBase: latoBaseVal, 
         altezza: altezzaVal 
       });
       perimetro = await invoke("calcola_perimetro_triangolo", { 
         lato1: lato1Val, 
         lato2: lato2Val, 
-        lato_base: latoBaseVal, 
+        latoBase: latoBaseVal, 
         altezza: altezzaVal 
       });
       
       // Se il risultato è 0, significa che il triangolo non è valido
       if (typeof area === "number" && area === 0 && typeof perimetro === "number" && perimetro === 0) {
         alert("⚠️ Il triangolo non è valido secondo la disuguaglianza triangolare (lato1 + lato2 deve essere > lato_base).");
+        area = "Errore ❌";
+        perimetro = "Errore ❌";
       }
     } catch (e) {
       console.error("Errore durante l'invocazione di Tauri:", e);
-      area = "Errore ❌";
-      perimetro = "Errore ❌";
+      area = "Errore: " + (e instanceof Error ? e.message : String(e));
+      perimetro = "Errore: " + (e instanceof Error ? e.message : String(e));
     }
   }
 
@@ -218,7 +225,7 @@
     <div class="graphic-column">
       {#if typeof area === "number" && area > 0 && lato_base > 0 && altezza > 0}
         <div class="triangle-container">
-          <svg viewBox="0 0 200 200" class="triangle-svg" style={ `--triangle-color: ${triangleColor}; --text-color: ${textColor};` }>
+          <svg viewBox="0 0 200 240" class="triangle-svg" style={ `--triangle-color: ${triangleColor}; --text-color: ${textColor};` }>
             <g transform="translate(100, 100)">
               <!-- Triangolo - usiamo un path per creare un triangolo isoscele per semplicità -->
               <path
@@ -226,8 +233,8 @@
                 class="triangle-border"
               />
 
-              <text x="0" y="-6" class="area-label">Area:</text>
-              <text x="0" y="6" class="area-value">{formatResult(area)}</text>
+              <text x="0" y={area_y} class="area-label">Area:</text>
+              <text x="0" y={area_y + 14} class="area-value">{formatResult(area)}</text>
 
               <text x="0" y={perimeter_y} class="perimeter-text">
                 Perimetro: {formatResult(perimetro)}
@@ -237,7 +244,7 @@
                 Base: {lato_base.toFixed(2)}
               </text>
               
-              <text x="0" y={-half_altezza - 15} class="side-label side-a">
+              <text x={-half_base - 10} y="0" class="side-label side-a">
                 Altezza: {altezza.toFixed(2)}
               </text>
             </g>
@@ -330,7 +337,7 @@
 
   .triangle-container {
     width: 200px;
-    height: 200px;
+    height: 240px;
   }
 
   .triangle-svg {
@@ -353,7 +360,7 @@
     dominant-baseline: middle;
     fill: var(--text-color, #7B1FA2);
     font-weight: bold;
-    font-size: 14px;
+    font-size: 16px;
   }
 
   .area-value {
@@ -361,20 +368,20 @@
     dominant-baseline: middle;
     fill: var(--text-color, #7B1FA2);
     font-weight: bold;
-    font-size: 14px;
+    font-size: 16px;
   }
 
   .perimeter-text {
     text-anchor: middle;
     dominant-baseline: middle;
     fill: var(--text-color, #7B1FA2);
-    font-size: 12px;
+    font-size: 14px;
   }
 
   .side-label {
     text-anchor: middle;
     fill: var(--text-color, #7B1FA2);
-    font-size: 12px;
+    font-size: 14px;
   }
 
   .side-a {
