@@ -13,6 +13,9 @@ use tracing_appender::rolling;
 // Import per informazioni di sistema
 use std::env;
 
+// Import per screenshot
+use tauri::Emitter;
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -206,37 +209,23 @@ fn greet(name: &str) -> String {
 // Command per il calcolo dell'area (usa ileana-lib)
 #[tauri::command]
 #[instrument]
-fn calcola_area_quadrato(lato: f64) -> Result<f64, String> {
+fn calcola_area_quadrato(lato: f64) -> f64 {
     debug!("Calcolando area quadrato con lato: {}", lato);
-    
-    if lato < 0.0 {
-        let err_msg = format!("Lato negativo non valido: {}", lato);
-        error!("{}", err_msg);
-        return Err(err_msg);
-    }
-    
     let q = Quadrato { lato };
     let result = q.calcola_area();
     debug!("Risultato area quadrato: {}", result);
-    Ok(result)
+    result
 }
 
 // Command per il calcolo del perimetro (usa ileana-lib)
 #[tauri::command]
 #[instrument]
-fn calcola_perimetro_quadrato(lato: f64) -> Result<f64, String> {
+fn calcola_perimetro_quadrato(lato: f64) -> f64 {
     debug!("Calcolando perimetro quadrato con lato: {}", lato);
-    
-    if lato < 0.0 {
-        let err_msg = format!("Lato negativo non valido: {}", lato);
-        error!("{}", err_msg);
-        return Err(err_msg);
-    }
-    
     let q = Quadrato { lato };
     let result = q.calcola_perimetro();
     debug!("Risultato perimetro quadrato: {}", result);
-    Ok(result)
+    result
 }
 
 // Command per il calcolo dell'area del rettangolo (usa ileana-lib)
@@ -303,6 +292,39 @@ fn calcola_perimetro_triangolo(lato1: f64, lato2: f64, lato_base: f64, altezza: 
     let result = t.calcola_perimetro();
     debug!("Risultato perimetro triangolo: {}", result);
     result
+}
+
+// Command per catturare screenshot dell'app (solo in modalità debug)
+#[tauri::command]
+#[instrument]
+async fn capture_screenshot(window: tauri::Window) -> Result<String, String> {
+    debug!("Catturando screenshot della finestra");
+    
+    // Verifica che siamo in modalità debug
+    if !cfg!(debug_assertions) {
+        let err = "Screenshot disponibile solo in modalità debug".to_string();
+        warn!("{}", err);
+        return Err(err);
+    }
+    
+    // Ottieni le dimensioni della finestra
+    let window_size = window.inner_size().map_err(|e| {
+        error!("Errore ottenendo dimensioni finestra: {}", e);
+        e.to_string()
+    })?;
+    
+    debug!("Dimensione finestra: {}x{}", window_size.width, window_size.height);
+    
+    // Per Tauri 2, dobbiamo usare un approccio basato su eventi
+    // Emettiamo un evento che il frontend può ascoltare per catturare lo screenshot
+    window.emit("capture-screenshot", "").map_err(|e: tauri::Error| {
+        error!("Errore emettendo evento per screenshot: {}", e);
+        e.to_string()
+    })?;
+    
+    info!("Evento per screenshot emesso. Il frontend dovrebbe gestire la cattura usando html2canvas.");
+    
+    Ok("Evento per screenshot emesso. Il frontend dovrebbe catturare lo schermo.".to_string())
 }
 
 /// Configura il sistema di logging con tracing
@@ -394,7 +416,8 @@ pub fn run() {
             calcola_area_cerchio,      // Registriamo l'Area del cerchio
             calcola_perimetro_cerchio,  // Registriamo la Circonferenza del cerchio
             calcola_area_triangolo,    // Registriamo l'Area del triangolo
-            calcola_perimetro_triangolo // Registriamo il Perimetro del triangolo
+            calcola_perimetro_triangolo, // Registriamo il Perimetro del triangolo
+            capture_screenshot         // Screenshot dell'app (solo debug)
         ])
         .run(tauri::generate_context!())
         .map_err(|e| {

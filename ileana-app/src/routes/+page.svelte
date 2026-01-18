@@ -4,6 +4,7 @@
     import Cerchio from '../components/Cerchio.svelte';
     import Triangolo from '../components/Triangolo.svelte';
     import Card from '../components/Card.svelte';
+    import ScreenshotButton from '../components/ScreenshotButton.svelte';
 </script>
 
 <!-- Hero Section -->
@@ -88,6 +89,21 @@
      
   </div>
 </section>
+
+<!-- Screenshot Section (solo in modalità debug) -->
+{#if import.meta.env.DEV}
+<section class="text-center py-8">
+  <h2 class="text-2xl font-bold text-ileana-primary dark:text-ileana-accent mb-4">
+    📸 Debug Tools
+  </h2>
+  <p class="text-gray-600 dark:text-gray-300 mb-6">
+    Capture screenshots for debugging (development only)
+  </p>
+  <div class="max-w-md mx-auto">
+    <ScreenshotButton />
+  </div>
+</section>
+{/if}
 
 <!-- Call to Action -->
 <section class="text-center py-8">
