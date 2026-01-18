@@ -34,3 +34,8 @@ serde_json = "1"
 
 # libreria principale
 ileana-lib = { path = "../../ileana-lib" }
+
+# Logging con tracing (per diagnostica contestuale)
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["json", "env-filter"] }
+tracing-appender = "0.2"

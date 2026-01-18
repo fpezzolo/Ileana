@@ -3,7 +3,15 @@ use ileana_lib::quadrato::Quadrato;
 use ileana_lib::rettangolo::Rettangolo;
 use ileana_lib::cerchio::Cerchio;
 use ileana_lib::triangolo::Triangolo;
-use ileana_lib::geometria::FiguraGeometrica; 
+use ileana_lib::geometria::FiguraGeometrica;
+
+// Import per il logging con tracing
+use tracing::{debug, info, warn, error, instrument};
+use tracing_subscriber::{fmt, EnvFilter, prelude::*};
+use tracing_appender::rolling;
+
+// Import per informazioni di sistema
+use std::env;
 
 #[cfg(test)]
 mod tests {
@@ -185,70 +193,195 @@ mod tests {
 
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
 #[tauri::command]
+#[instrument]
 fn greet(name: &str) -> String {
-    format!("Hello, {}! You've been greeted from Rust!", name)
+    debug!("Greet command called with name: {}", name);
+    let response = format!("Hello, {}! You've been greeted from Rust!", name);
+    debug!("Greet response: {}", response);
+    response
 }
 
 
 // 2. I TUOI NUOVI COMMANDS
 // Command per il calcolo dell'area (usa ileana-lib)
 #[tauri::command]
-fn calcola_area_quadrato(lato: f64) -> f64 {
+#[instrument]
+fn calcola_area_quadrato(lato: f64) -> Result<f64, String> {
+    debug!("Calcolando area quadrato con lato: {}", lato);
+    
+    if lato < 0.0 {
+        let err_msg = format!("Lato negativo non valido: {}", lato);
+        error!("{}", err_msg);
+        return Err(err_msg);
+    }
+    
     let q = Quadrato { lato };
-    q.calcola_area() 
+    let result = q.calcola_area();
+    debug!("Risultato area quadrato: {}", result);
+    Ok(result)
 }
 
 // Command per il calcolo del perimetro (usa ileana-lib)
 #[tauri::command]
-fn calcola_perimetro_quadrato(lato: f64) -> f64 {
+#[instrument]
+fn calcola_perimetro_quadrato(lato: f64) -> Result<f64, String> {
+    debug!("Calcolando perimetro quadrato con lato: {}", lato);
+    
+    if lato < 0.0 {
+        let err_msg = format!("Lato negativo non valido: {}", lato);
+        error!("{}", err_msg);
+        return Err(err_msg);
+    }
+    
     let q = Quadrato { lato };
-    q.calcola_perimetro() 
+    let result = q.calcola_perimetro();
+    debug!("Risultato perimetro quadrato: {}", result);
+    Ok(result)
 }
 
 // Command per il calcolo dell'area del rettangolo (usa ileana-lib)
 #[tauri::command]
+#[instrument]
 fn calcola_area_rettangolo(base: f64, altezza: f64) -> f64 {
+    debug!("Calcolando area rettangolo con base: {}, altezza: {}", base, altezza);
     let r = Rettangolo { base, altezza };
-    r.calcola_area() 
+    let result = r.calcola_area();
+    debug!("Risultato area rettangolo: {}", result);
+    result
 }
 
 // Command per il calcolo del perimetro del rettangolo (usa ileana-lib)
 #[tauri::command]
+#[instrument]
 fn calcola_perimetro_rettangolo(base: f64, altezza: f64) -> f64 {
+    debug!("Calcolando perimetro rettangolo con base: {}, altezza: {}", base, altezza);
     let r = Rettangolo { base, altezza };
-    r.calcola_perimetro() 
+    let result = r.calcola_perimetro();
+    debug!("Risultato perimetro rettangolo: {}", result);
+    result
 }
 
 // Command per il calcolo dell'area del cerchio (usa ileana-lib)
 #[tauri::command]
+#[instrument]
 fn calcola_area_cerchio(raggio: f64) -> f64 {
+    debug!("Calcolando area cerchio con raggio: {}", raggio);
     let c = Cerchio { raggio };
-    c.calcola_area() 
+    let result = c.calcola_area();
+    debug!("Risultato area cerchio: {}", result);
+    result
 }
 
 // Command per il calcolo della circonferenza del cerchio (usa ileana-lib)
 #[tauri::command]
+#[instrument]
 fn calcola_perimetro_cerchio(raggio: f64) -> f64 {
+    debug!("Calcolando circonferenza cerchio con raggio: {}", raggio);
     let c = Cerchio { raggio };
-    c.calcola_perimetro() 
+    let result = c.calcola_perimetro();
+    debug!("Risultato circonferenza cerchio: {}", result);
+    result
 }
 
 // Command per il calcolo dell'area del triangolo (usa ileana-lib)
 #[tauri::command]
+#[instrument]
 fn calcola_area_triangolo(lato1: f64, lato2: f64, lato_base: f64, altezza: f64) -> f64 {
+    debug!("Calcolando area triangolo con lati: {}, {}, {}, altezza: {}", lato1, lato2, lato_base, altezza);
     let t = Triangolo { lato1, lato2, lato_base, altezza };
-    t.calcola_area() 
+    let result = t.calcola_area();
+    debug!("Risultato area triangolo: {}", result);
+    result
 }
 
 // Command per il calcolo del perimetro del triangolo (usa ileana-lib)
 #[tauri::command]
+#[instrument]
 fn calcola_perimetro_triangolo(lato1: f64, lato2: f64, lato_base: f64, altezza: f64) -> f64 {
+    debug!("Calcolando perimetro triangolo con lati: {}, {}, {}, altezza: {}", lato1, lato2, lato_base, altezza);
     let t = Triangolo { lato1, lato2, lato_base, altezza };
-    t.calcola_perimetro() 
+    let result = t.calcola_perimetro();
+    debug!("Risultato perimetro triangolo: {}", result);
+    result
+}
+
+/// Configura il sistema di logging con tracing
+/// Usa formato JSON per debug, formato compatto per release
+fn setup_logging() {
+    // Crea un file rotante per i log
+    let file_appender = rolling::daily("./logs", "ileana-app.log");
+    
+    // Configura il livello di log: DEBUG in debug mode, INFO in release
+    let filter_layer = EnvFilter::try_from_default_env()
+        .unwrap_or_else(|_| {
+            if cfg!(debug_assertions) {
+                EnvFilter::new("debug")
+            } else {
+                EnvFilter::new("info")
+            }
+        });
+
+    // Configura il subscriber
+    let subscriber = tracing_subscriber::registry()
+        .with(filter_layer);
+
+    if cfg!(debug_assertions) {
+        // Formato JSON per debug (ricco di dettagli)
+        let json_layer = fmt::layer()
+            .json()
+            .with_file(true)
+            .with_line_number(true)
+            .with_target(true)
+            .with_thread_ids(true);
+        
+        // Layer per file in formato JSON
+        let file_layer = fmt::layer()
+            .with_writer(file_appender)
+            .json()
+            .with_file(true)
+            .with_line_number(true);
+        
+        subscriber
+            .with(json_layer)
+            .with(file_layer)
+            .init();
+    } else {
+        // Formato compatto per release
+        let compact_layer = fmt::layer()
+            .compact()
+            .without_time()
+            .with_target(false);
+        
+        // Layer per file in formato JSON
+        let file_layer = fmt::layer()
+            .with_writer(file_appender)
+            .json()
+            .with_file(true)
+            .with_line_number(true);
+        
+        subscriber
+            .with(compact_layer)
+            .with(file_layer)
+            .init();
+    }
+
+    info!("Logging configured - Debug mode: {}", cfg!(debug_assertions));
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
+#[instrument]
 pub fn run() {
+    // Inizializza il sistema di logging
+    setup_logging();
+    
+    info!("Starting Ileana App");
+    debug!("Debug logging is active");
+    
+    // Log dettagliato dell'ambiente
+    debug!("Running in debug mode: {}", cfg!(debug_assertions));
+    debug!("Target OS: {}", std::env::consts::OS);
+    debug!("Target architecture: {}", std::env::consts::ARCH);
+    
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
         // 3. REGISTRAZIONE DI TUTTI I COMMANDS
@@ -264,5 +397,11 @@ pub fn run() {
             calcola_perimetro_triangolo // Registriamo il Perimetro del triangolo
         ])
         .run(tauri::generate_context!())
+        .map_err(|e| {
+            error!("Failed to start Tauri application: {}", e);
+            e
+        })
         .expect("error while running tauri application");
+    
+    info!("Ileana App started successfully");
 }
