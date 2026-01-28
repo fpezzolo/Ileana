@@ -5,6 +5,7 @@
     import Triangolo from '../components/Triangolo.svelte';
     import Card from '../components/Card.svelte';
     import ScreenshotButton from '../components/ScreenshotButton.svelte';
+    import Rombo from '../components/Rombo.svelte';
 </script>
 
 <!-- Hero Section -->
@@ -87,6 +88,18 @@
       </div>
     </Card>
      
+
+    <!-- Rombo predefinito -->
+    <Card
+      title="Rombo Standard"
+      description="Versione predefinita con colori standard"
+      color="primary"
+    >
+      <div class="flex justify-center">
+        <Rombo />
+      </div>
+    </Card>
+
   </div>
 </section>
 

@@ -3,6 +3,7 @@ use ileana_lib::quadrato::Quadrato;
 use ileana_lib::rettangolo::Rettangolo;
 use ileana_lib::cerchio::Cerchio;
 use ileana_lib::triangolo::Triangolo;
+use ileana_lib::rombo::Rombo;
 use ileana_lib::geometria::FiguraGeometrica;
 
 // Import per il logging con tracing
@@ -175,6 +176,36 @@ mod tests {
         assert!(area_cerchio > 0.0);
     }
 
+    // Test per Rombo
+    #[test]
+    fn test_calcola_area_rombo() {
+        let result = calcola_area_rombo(6.0, 8.0);
+        assert_eq!(result, 24.0);
+    }
+
+    #[test]
+    fn test_calcola_perimetro_rombo() {
+        let result = calcola_perimetro_rombo(5.0);
+        assert_eq!(result, 20.0);
+    }
+
+    #[test]
+    fn test_rombo_edge_cases() {
+        // Test con diagonali 0
+        assert_eq!(calcola_area_rombo(0.0, 5.0), 0.0);
+        assert_eq!(calcola_area_rombo(5.0, 0.0), 0.0);
+        assert_eq!(calcola_area_rombo(0.0, 0.0), 0.0);
+
+        // Test con lato 0
+        assert_eq!(calcola_perimetro_rombo(0.0), 0.0);
+
+        // Test con valori molto grandi
+        let area_grande = calcola_area_rombo(1e6, 1e6);
+        let perimetro_grande = calcola_perimetro_rombo(1e6);
+        assert!(area_grande > 0.0);
+        assert!(perimetro_grande > 0.0);
+    }
+
     #[test]
     fn test_proprieta_matematiche() {
         // Test che verifica le proprietà matematiche
@@ -291,6 +322,28 @@ fn calcola_perimetro_triangolo(lato1: f64, lato2: f64, lato_base: f64, altezza: 
     let t = Triangolo { lato1, lato2, lato_base, altezza };
     let result = t.calcola_perimetro();
     debug!("Risultato perimetro triangolo: {}", result);
+    result
+}
+
+// Command per il calcolo dell'area del rombo (usa ileana-lib)
+#[tauri::command]
+#[instrument]
+fn calcola_area_rombo(diagonale1: f64, diagonale2: f64) -> f64 {
+    debug!("Calcolando area rombo con diagonali: {}, {}", diagonale1, diagonale2);
+    let r = Rombo { diagonale_minore: diagonale1, diagonale_maggiore: diagonale2, lato: 0.0 };
+    let result = r.calcola_area();
+    debug!("Risultato area rombo: {}", result);
+    result
+}
+
+// Command per il calcolo del perimetro del rombo (usa ileana-lib)
+#[tauri::command]
+#[instrument]
+fn calcola_perimetro_rombo(lato: f64) -> f64 {
+    debug!("Calcolando perimetro rombo con lato: {}", lato);
+    let r = Rombo { diagonale_minore: 0.0, diagonale_maggiore: 0.0, lato };
+    let result = r.calcola_perimetro();
+    debug!("Risultato perimetro rombo: {}", result);
     result
 }
 
@@ -417,6 +470,8 @@ pub fn run() {
             calcola_perimetro_cerchio,  // Registriamo la Circonferenza del cerchio
             calcola_area_triangolo,    // Registriamo l'Area del triangolo
             calcola_perimetro_triangolo, // Registriamo il Perimetro del triangolo
+            calcola_area_rombo,        // Registriamo l'Area del rombo
+            calcola_perimetro_rombo,    // Registriamo il Perimetro del rombo
             capture_screenshot         // Screenshot dell'app (solo debug)
         ])
         .run(tauri::generate_context!())
