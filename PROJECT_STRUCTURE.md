@@ -134,12 +134,177 @@ Ileana/
 6. **WebAssembly** - Per l'esecuzione nel browser
 7. **Node.js** - Per la gestione delle dipendenze frontend
 
-## Flusso di Build
+## Dipendenze Principali
 
-1. La libreria Rust (`ileana-lib`) contiene la logica principale
-2. L'applicazione Svelte (`ileana-app`) usa la libreria tramite Tauri
-3. Tauri collega il frontend Svelte con il backend Rust
-4. Gli script nella cartella `scripts/` automatizzano vari processi
+### ileana-lib (Libreria Rust)
+- **Dipendenze**: Nessuna dipendenza esterna (pura Rust)
+- **Versione Rust**: 2024 Edition
+- **Licenza**: GPL-3.0
+
+### ileana-cli (Interfaccia a Riga di Comando)
+- **Dipendenze principali**:
+  - `ileana-lib` (locale): `{ path = "../ileana-lib" }`
+- **Scopo**: Fornisce accesso CLI alle funzionalità geometriche
+
+### ileana-wasm (WebAssembly)
+- **Dipendenze principali**:
+  - `wasm-bindgen = "0.2"` - Per l'interoperabilità con JavaScript
+  - `ileana-lib` (locale): `{ path = "../ileana-lib" }`
+- **Configurazione**: `crate-type = ["cdylib"]` per la generazione WASM
+
+### ileana-app (Applicazione Svelte/Tauri)
+
+#### Dipendenze Rust (Tauri)
+- `tauri = { version = "2" }` - Framework desktop
+- `tauri-plugin-opener = "2"` - Plugin per apertura file
+- `serde = { version = "1", features = ["derive"] }` - Serializzazione
+- `serde_json = "1"` - Supporto JSON
+- `ileana-lib` (locale): `{ path = "../../ileana-lib" }`
+- `tracing = "0.1"` - Logging avanzato
+- `tracing-subscriber = { version = "0.3", features = ["json", "env-filter"] }`
+- `tracing-appender = "0.2"` - Logging su file
+- `image = "0.24"` - Manipolazione immagini
+- `base64 = "0.21"` - Codifica/decodifica base64
+
+#### Dipendenze Frontend (Node.js)
+- `@sveltejs/kit = "^2.9.0"` - Framework Svelte
+- `svelte = "^5.0.0"` - Linguaggio Svelte
+- `@tauri-apps/api = "^2.9.1"` - API Tauri per frontend
+- `tailwindcss = "^4.1.18"` - Framework CSS
+- `vite = "^7.2.6"` - Build tool
+- `typescript = "^5.9.3"` - Tipizzazione statica
+
+## Processo di Build Dettagliato
+
+### Build di Sviluppo
+
+Per compilare l'intero workspace in modalità sviluppo:
+
+```bash
+# Compilazione completa del workspace
+cargo build
+
+# Compilazione WebAssembly per sviluppo
+cd ileana-wasm
+wasm-pack build --target web
+cd ..
+```
+
+Oppure utilizzare lo script fornito:
+```bash
+./scripts/build-dev.sh
+```
+
+### Build di Produzione
+
+Per compilare in modalità ottimizzata per il rilascio:
+
+```bash
+# Compilazione completa del workspace in release
+cargo build --release
+
+# Compilazione WebAssembly ottimizzata
+cd ileana-wasm
+wasm-pack build --release --target web
+cd ..
+```
+
+Oppure utilizzare lo script fornito:
+```bash
+./scripts/build-release.sh
+```
+
+### Esecuzione dell'Applicazione Desktop
+
+Per avviare l'applicazione Tauri in modalità sviluppo:
+
+```bash
+cd ileana-app
+npm run tauri dev
+```
+
+Per build di produzione:
+```bash
+cd ileana-app
+npm run tauri build
+```
+
+### Test WebAssembly
+
+Per testare il modulo WebAssembly:
+
+```bash
+./scripts/avvia-prova-webassembly.sh
+```
+
+Questo script:
+1. Compila il modulo WASM
+2. Avvia un server HTTP locale sulla porta 4000
+3. Apre automaticamente il browser sulla pagina di test
+
+## Integrazione tra Componenti
+
+### Flusso di Dati
+
+```
+ileana-lib (Rust)
+     │
+     ├── ileana-cli (Rust CLI)
+     ├── ileana-wasm (WebAssembly)
+     └── ileana-app (Tauri)
+            │
+            ├── src-tauri (Backend Rust)
+            │      └── Integra ileana-lib direttamente
+            │
+            └── src (Frontend Svelte)
+                   └── Componenti UI che chiamano Tauri
+```
+
+### Integrazione Tauri-Svelte
+
+1. **Backend Rust** (`src-tauri/src/lib.rs`):
+   - Importa direttamente `ileana-lib` come dipendenza locale
+   - Espone funzioni Rust tramite Tauri commands
+   - Gestisce la logica geometrica e la serializzazione JSON
+
+2. **Frontend Svelte** (`src/routes/+page.svelte`):
+   - Importa componenti geometrici (Quadrato, Rettangolo, Cerchio, Triangolo)
+   - Utilizza Tauri API per comunicare con il backend
+   - Visualizza i risultati in interfaccia utente reattiva
+
+3. **Comunicazione**:
+   - Tauri fornisce un bridge tra Rust e JavaScript
+   - I dati vengono serializzati/deserializzati automaticamente
+   - Supporto per chiamate asincrone e gestione errori
+
+### Esempio di Integrazione
+
+Nel file `src-tauri/src/lib.rs`:
+
+```rust
+use ileana_lib::quadrato::Quadrato;
+use ileana_lib::rettangolo::Rettangolo;
+// ... altre importazioni
+
+// Funzioni che utilizzano direttamente la libreria
+#[tauri::command]
+fn calcola_area_quadrato(lato: f64) -> f64 {
+    Quadrato::new(lato).area()
+}
+```
+
+Nel frontend Svelte:
+
+```svelte
+<script>
+import { invoke } from '@tauri-apps/api/tauri';
+
+async function calcolaArea(lato) {
+    const area = await invoke('calcola_area_quadrato', { lato });
+    return area;
+}
+</script>
+```
 
 ## Dipendenze del Workspace
 
@@ -153,6 +318,81 @@ members = [
     "ileana-app/src-tauri"
 ]
 resolver = "2"
+```
+
+## Esempi di Utilizzo
+
+### Utilizzo della Libreria Rust
+
+```rust
+// Esempio di utilizzo diretto della libreria
+use ileana_lib::quadrato::Quadrato;
+use ileana_lib::rettangolo::Rettangolo;
+use ileana_lib::cerchio::Cerchio;
+
+fn main() {
+    // Creazione e calcoli con Quadrato
+    let quadrato = Quadrato::new(5.0);
+    println!("Area quadrato: {}", quadrato.area());
+    println!("Perimetro quadrato: {}", quadrato.perimetro());
+
+    // Creazione e calcoli con Rettangolo
+    let rettangolo = Rettangolo::new(4.0, 6.0);
+    println!("Area rettangolo: {}", rettangolo.area());
+    println!("Perimetro rettangolo: {}", rettangolo.perimetro());
+
+    // Creazione e calcoli con Cerchio
+    let cerchio = Cerchio::new(3.0);
+    println!("Area cerchio: {}", cerchio.area());
+    println!("Perimetro cerchio: {}", cerchio.perimetro());
+}
+```
+
+### Utilizzo tramite CLI
+
+```bash
+# Compilare ed eseguire il CLI
+cargo run -p ileana-cli
+
+# Esempio di output:
+# Area del quadrato con lato 5.0: 25.0
+# Perimetro del quadrato con lato 5.0: 20.0
+# Area del rettangolo 4.0x6.0: 24.0
+# Perimetro del rettangolo 4.0x6.0: 20.0
+# Area del cerchio con raggio 3.0: 28.274333882308138
+# Perimetro del cerchio con raggio 3.0: 18.84955592153876
+```
+
+### Utilizzo nell'Applicazione Desktop
+
+L'applicazione desktop fornisce un'interfaccia grafica per:
+- Visualizzare forme geometriche
+- Calcolare aree e perimetri
+- Esportare risultati
+- Catturare screenshot delle visualizzazioni
+
+### Utilizzo WebAssembly
+
+```html
+<!-- Esempio di utilizzo in pagina HTML -->
+<script type="module">
+  import init, { calcola_area_quadrato } from './ileana_wasm.js';
+
+  async function run() {
+    await init();
+    
+    const lato = 5.0;
+    const area = calcola_area_quadrato(lato);
+    console.log(`Area del quadrato con lato ${lato}: ${area}`);
+    
+    document.getElementById('result').textContent = 
+      `Area: ${area.toFixed(2)}`;
+  }
+
+  run();
+</script>
+
+<div id="result"></div>
 ```
 
 ## Come Aggiungere Nuove Funzionalità
@@ -177,6 +417,57 @@ resolver = "2"
 - **Task**: Definiti in `.vscode/tasks.json`
 - **Launch**: Configurazioni in `.vscode/launch.json`
 
+## Configurazione dell'Ambiente di Sviluppo
+
+### Prerequisiti
+
+1. **Rust**: Versione 1.88.0 o superiore
+   ```bash
+   curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+   ```
+
+2. **Node.js**: Versione 18.x o superiore
+   ```bash
+   # Utilizzare nvm per l'installazione
+   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+   nvm install 18
+   ```
+
+3. **Strumenti aggiuntivi**:
+   ```bash
+   # wasm-pack per WebAssembly
+   cargo install wasm-pack
+   
+   # basic-http-server per test WebAssembly
+   cargo install basic-http-server
+   ```
+
+### Configurazione del Progetto
+
+1. **Clonare il repository**:
+   ```bash
+   git clone https://github.com/fpezzolo/Ileana.git
+   cd Ileana
+   ```
+
+2. **Installare dipendenze frontend**:
+   ```bash
+   cd ileana-app
+   npm install
+   cd ..
+   ```
+
+3. **Configurare VSCode** (opzionale ma consigliato):
+   - Installare estensioni: Rust Analyzer, Svelte, Tailwind CSS IntelliSense
+   - Aprire il workspace: `ileana.code-workspace`
+
+### Comandi Utili
+
+- **Verifica linting**: `./scripts/lint.sh`
+- **Esecuzione test**: `./scripts/lint-test.sh`
+- **Generazione documentazione**: `./scripts/doc.sh`
+- **Aggiornamento Rust**: `./scripts/aggiorna-rust.sh`
+
 ## Processo di Sviluppo Tipico
 
 1. Implementare la logica in `ileana-lib`
@@ -185,9 +476,18 @@ resolver = "2"
 4. Costruire l'applicazione desktop con Tauri
 5. Eseguire test e linting con gli script forniti
 
+## Documentazione Correlata
+
+Per approfondire specifici aspetti del progetto:
+
+- **[README.md](README.md)**: Panoramica generale e informazioni di base
+- **[DOCUMENTATION_SUMMARY.md](DOCUMENTATION_SUMMARY.md)**: Qualità e statistiche della documentazione Rust
+- **[RUST_DOCUMENTATION.md](RUST_DOCUMENTATION.md)**: Guida pratica all'utilizzo della documentazione Rust
+
 ## Note Importanti
 
 - Il progetto usa un approccio modulare con separazione chiara tra logica e interfaccia
 - La libreria Rust è progettata per essere riutilizzabile in diversi contesti
 - L'applicazione desktop combina il meglio di Rust (performance) e Svelte (UI reattiva)
 - Gli script di utilità semplificano le operazioni comuni di sviluppo
+- **Tutta la documentazione è interconnessa** per evitare ridondanze e fornire informazioni complete

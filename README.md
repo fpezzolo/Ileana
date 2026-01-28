@@ -1,22 +1,27 @@
 # Ileana
 Programma didattico in Rust I.l.e.a.n.a. Interessante Lavoro Elabora Aree Nonchè Altro
 
+**Versione Beta**
 
-### Note
+## 📖 Panoramica
 
-Versione Beta
+Ileana è un progetto didattico che combina Rust, Svelte e Tauri per creare un'applicazione desktop con funzionalità geometriche. Il progetto include una libreria Rust per operazioni geometriche, un'interfaccia a riga di comando, supporto WebAssembly e un'applicazione desktop moderna.
 
-### Linguaggio
+## 🚀 Iniziare
 
-il programma è realizzato in linguaggio [Rust](https://www.rust-lang.org/)
-Per l'installazione di Rust si rimanda al sito ufficiale.
+Per informazioni dettagliate su:
+- **Struttura del progetto**: Consultare [`PROJECT_STRUCTURE.md`](PROJECT_STRUCTURE.md)
+- **Documentazione Rust**: Consultare [`RUST_DOCUMENTATION.md`](RUST_DOCUMENTATION.md)
+- **Riassunto documentazione**: Consultare [`DOCUMENTATION_SUMMARY.md`](DOCUMENTATION_SUMMARY.md)
 
-Il programma è sviluppato con [visual code](https://code.visualstudio.com/docs/languages/rust) ed utilizza Rust 1.88.0
+### Requisiti Minimi
 
+- **Rust**: Versione 1.88.0 o superiore
+- **Node.js**: Versione 18.x o superiore (per l'applicazione desktop)
 
-### Compilazione
+### Compilazione Rapida
 
-Per compilare il programma si utilizza il comando
+Per compilare ed eseguire rapidamente il CLI:
 
 ```shell
 cargo run -p ileana-cli
@@ -82,15 +87,18 @@ introdotti script di utility nella cartella scripts
 introdotta la base per i test automatici 
 
 
-## ⚙️ Script di qualità: linting e test
+## ⚙️ Script di Qualità
 
-Per garantire coerenza e qualità del codice, questo progetto include tre script PowerShell nella cartella [`scripts/`](scripts/) che puoi eseguire facilmente per analizzare e verificare il comportamento del programma.
+Il progetto include script per linting, test e documentazione nella cartella [`scripts/`](scripts/).
 
-### 🧼 Verifica linting con Clippy
+### Script Principali
 
-```powershell
-.\scripts\lint.ps1
-```
+- **Linting**: `./scripts/lint.sh` (o `.ps1` per Windows)
+- **Test**: `./scripts/lint-test.sh`
+- **Documentazione**: `./scripts/doc.sh`
+- **Build**: `./scripts/build-dev.sh` e `./scripts/build-release.sh`
+
+Per dettagli completi su tutti gli script disponibili, consultare [`PROJECT_STRUCTURE.md`](PROJECT_STRUCTURE.md#script-di-utilità).
 
 ### 05/2025
 un cambio di architettura con la divisione del programma in ileana-cli ed ileana-lib 
@@ -99,3 +107,26 @@ un cambio di architettura con la divisione del programma in ileana-cli ed ileana
 ## 📄 Licenza
 
 Questo progetto è distribuito sotto licenza [GPL-3.0](LICENSE).
+
+## 📚 Documentazione Completa
+
+Per approfondire:
+- **[Struttura del Progetto](PROJECT_STRUCTURE.md)**: Architettura, dipendenze, build process
+- **[Documentazione Rust](RUST_DOCUMENTATION.md)**: Dettagli tecnici sulla documentazione Rust
+- **[Riassunto Documentazione](DOCUMENTATION_SUMMARY.md)**: Statistiche e qualità della documentazione
+
+## 🤝 Contribuire
+
+Le contribuzioni sono benvenute! Per contribuire:
+
+1. Leggere la documentazione nella cartella [`docs/`](docs/) (se esiste)
+2. Seguire le convenzioni di codice esistenti
+3. Aggiungere test per nuove funzionalità
+4. Aggiornare la documentazione corrispondente
+
+## 📬 Contatti
+
+Per domande o supporto:
+- **Repository**: [https://github.com/fpezzolo/Ileana](https://github.com/fpezzolo/Ileana)
+- **Issue Tracker**: Utilizzare il sistema di issue di GitHub
+- **Autori**: Federico Pezzolo, Francesco Pezzolo
