@@ -238,22 +238,6 @@
     font-size: 1.1em;
   }
 
-  .info-message {
-    margin-top: 15px;
-    font-size: 0.9em;
-    color: #666;
-    font-style: italic;
-    text-align: center;
-  }
-
-  .info-message p {
-    margin: 5px 0;
-    padding: 8px;
-    background-color: rgba(76, 175, 80, 0.1);
-    border-left: 3px solid #4caf50;
-    border-radius: 4px;
-  }
-
   .square-container {
     width: 200px;
     height: 200px;
