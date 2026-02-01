@@ -59,11 +59,17 @@
   const half_diag1 = $derived(diag1_px / 2);
   const half_diag2 = $derived(diag2_px / 2);
   
-  // Posizione verticale per il testo del perimetro (sotto il rombo)
-  const perimeter_y = $derived(half_diag2 + 20);
+  // Calcolo dinamico delle dimensioni del font in base alle dimensioni del rombo
+  const font_size = $derived(Math.max(8, Math.min(14, Math.sqrt(diag1_px * diag2_px) / 10)));
   
-  // Posizione verticale per l'etichetta della diagonale 1
-  const diag1_label_y = $derived(-half_diag2 - 25);
+  // Posizione verticale per il testo del perimetro (sotto il rombo) - scalata in base alla dimensione
+  const perimeter_y = $derived(half_diag2 + Math.max(20, diag2_px * 0.2));
+  
+  // Posizione verticale per l'etichetta della diagonale 1 - scalata in base alla dimensione
+  const diag1_label_y = $derived(-half_diag2 - Math.max(25, diag2_px * 0.2));
+  
+  // Posizione verticale per l'etichetta della diagonale 2 - scalata in base alla dimensione
+  const diag2_label_offset = $derived(Math.max(10, diag2_px * 0.1));
 
   /**
    * Formatta il risultato numerico a due decimali o restituisce lo stato stringa.
@@ -201,19 +207,19 @@
                 class="rhombus-border"
               />
 
-              <text x="0" y="-12" class="area-label">Area:</text>
-              <text x="0" y="4" class="area-value">{formatResult(area)}</text>
+              <text x="0" y="-12" class="area-label" style={`font-size: ${font_size}px`}>Area:</text>
+              <text x="0" y="4" class="area-value" style={`font-size: ${font_size}px`}>{formatResult(area)}</text>
 
-              <text x="0" y={perimeter_y} class="perimeter-text">
+              <text x="0" y={perimeter_y} class="perimeter-text" style={`font-size: ${font_size * 0.8}px`}>
                 Perimetro: {formatResult(perimetro)}
               </text>
 
-              <text x="0" y={diag1_label_y} class="diagonal-label">
+              <text x="0" y={diag1_label_y} class="diagonal-label" style={`font-size: ${font_size * 0.8}px`}>
                 Diagonale 1: {diagonale1.toFixed(2)}
               </text>
               
               <g transform="rotate(-90)">
-                <text x="0" y={-half_diag2 + 10} class="diagonal-label">
+                <text x="0" y={-half_diag2 + diag2_label_offset} class="diagonal-label" style={`font-size: ${font_size * 0.8}px`}>
                   Diagonale 2: {diagonale2.toFixed(2)}
                 </text>
               </g>
@@ -330,7 +336,6 @@
     dominant-baseline: middle;
     fill: var(--text-color, #E65100);
     font-weight: bold;
-    font-size: 14px;
   }
 
   .area-value {
@@ -338,20 +343,17 @@
     dominant-baseline: middle;
     fill: var(--text-color, #E65100);
     font-weight: bold;
-    font-size: 14px;
   }
 
   .perimeter-text {
     text-anchor: middle;
     dominant-baseline: middle;
     fill: var(--text-color, #E65100);
-    font-size: 12px;
   }
 
   .diagonal-label {
     text-anchor: middle;
     fill: var(--text-color, #E65100);
-    font-size: 12px;
   }
 
   .rhombus-placeholder {
